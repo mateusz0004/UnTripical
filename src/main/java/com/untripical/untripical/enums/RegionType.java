@@ -1,0 +1,6 @@
+package com.untripical.untripical.enums;
+
+public enum RegionType {
+    MOUNTAIN, COASTAL, VIEW_POINT, LAKE, FOREST, DESERT, HISTORICAL,
+    CULTURAL, ADVENTURE, RELIGIOUS, ISLAND, DISTRICT, VOIVODESHIP, PARK
+}

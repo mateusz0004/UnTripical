@@ -2,6 +2,7 @@ package com.untripical.untripical.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.untripical.untripical.enums.AnnouncementType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -42,7 +43,7 @@ public class Announcement {
     @NotNull(message = "price must not be null")
     @Column(name = "price")
     @Min(0)
-    private double price;
+    private Double price;
 
     @NotBlank(message = "locationInfo must not be null")
     @Column(name = "location_info")
@@ -51,24 +52,29 @@ public class Announcement {
     @NotNull(message = "maxParticipants must not be null")
     @Column(name = "max_participants")
     @Positive
-    private int maxParticipants;
+    private Integer maxParticipants;
 
     @NotNull(message = "isActive must not be null")
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     @NotNull(message = "createdAt must not be null")
     @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    @JoinColumn(name = "guide_announcement_table_id")
     private List<GuideAnnouncementTable> guideAnnouncementTables;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "place_id")
     private Place place;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
 
 }

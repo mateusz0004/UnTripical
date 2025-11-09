@@ -25,19 +25,24 @@ public class TripPlan {
 
     @NotNull(message = "assignedAt must not be null")
     @Column(name = "assigned_at")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date assignedAt;
 
     @NotNull (message = "isActive must not be null")
     @Column (name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     @OneToMany (mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    @JoinColumn (name = "trip_stop_id")
     private List<TripStop> tripStops;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn (name = "user_id")
     private User user;
+
+    @PrePersist
+    protected void onCreate() {
+        this.assignedAt = new Date();
+    }
 }
