@@ -24,7 +24,7 @@ public class Review {
     @Max(5)
     @NotNull (message = "numberOfStars must not be null")
     @Column (name = "number_of_stars")
-    private double numberOfStars;
+    private Double numberOfStars;
 
     @NotBlank(message = "description must not be blank")
     @Column(name = "description")
@@ -32,6 +32,7 @@ public class Review {
 
     @NotNull(message = "createdAt must not be null")
     @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @ManyToOne
@@ -49,5 +50,8 @@ public class Review {
     @JoinColumn (name = "guide_details_id")
     private GuideDetails guideDetails;
 
-
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
 }

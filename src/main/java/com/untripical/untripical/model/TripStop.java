@@ -32,20 +32,15 @@ public class TripStop {
 
     @Column(name = "distance_to_next")
     @NotNull(message = "distanceToNext must not be null")
-    private double distanceToNext;
+    private Double distanceToNext;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn (name = "trip_plan_id")
-    private TripPlan tripPLan;
+    private TripPlan tripPlan;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn (name = "place_id")
     private Place place;
-
-
-
-
-
 }

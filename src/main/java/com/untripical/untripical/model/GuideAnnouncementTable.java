@@ -25,13 +25,13 @@ public class GuideAnnouncementTable {
     private String name;
 
     @NotNull(message = "date must not be null")
-    @Column(name = "name")
+    @Column(name = "date")
     private Date date;
 
     @Min(0)
     @NotNull(message = "totalDistance must not be null")
     @Column(name = "total_distance")
-    private double totalDistance;
+    private Double totalDistance;
 
     @ManyToOne
     @JsonBackReference
