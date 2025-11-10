@@ -37,6 +37,7 @@ public class Announcement {
     private AnnouncementType announcementType;
 
     @NotNull(message = "date must not be null")
+    @Temporal(TemporalType.DATE)
     @Column(name = "date")
     private Date date;
 
