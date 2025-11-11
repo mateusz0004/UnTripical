@@ -34,14 +34,14 @@ public class GuideDetails {
     @Column(name = "experience_level")
     @NotNull(message = "experienceLevel must not be null")
     private ExperienceLevel experienceLevel;
-    @Column(name = "counter_of_old_journey")
+    @Column(name = "counter_of_did_journey")
     @Min(0)
     private int counterOfDidJourney;
     @JsonManagedReference
-    @OneToMany(mappedBy = "guide_details", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "guideDetails", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GuideAnnouncementTable> guideAnnouncements;
     @JsonManagedReference
-    @OneToMany(mappedBy = "guide_details", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "guideDetails", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review>reviews;
     @OneToOne
     @JsonBackReference

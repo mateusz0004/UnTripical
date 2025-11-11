@@ -5,7 +5,7 @@ import lombok.Value;
 import java.util.Date;
 
 @Value
-public class GuideAnnoncementTableResponseDTO {
+public class GuideAnnouncementTableResponseDTO {
     private final Long id;
     private final String name;
     private final Date date;
