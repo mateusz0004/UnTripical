@@ -19,9 +19,13 @@ public class PlaceRequestDTO {
     @NotNull(message = "longitude must not be null")
     Double longitude;
 
-    @NotNull(message = "photoUrl must not be null")
+    @NotBlank(message = "photoUrl must not be blank")
     String photoUrl;
 
+    @NotNull(message = "region_id must not be null")
+    Long region_id;
 
+    @NotNull(message = "user_id must not be null")
+    Long user_id;
 
 }
