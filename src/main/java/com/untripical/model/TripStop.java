@@ -2,10 +2,16 @@ package com.untripical.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Table(name = "trip_stops")
 @Entity
@@ -23,7 +29,9 @@ public class TripStop {
 
     @NotBlank (message = "estimateHour must not be blank")
     @Column(name = "estimate_hour")
-    private String estimateHour;
+    @NotNull(message = "estimateHouse must not be null")
+    @Future(message = "start time must be in the future")
+    private LocalDateTime estimateHour;
 
     @Min(1)
     @Column(name = "order_index")
