@@ -1,0 +1,27 @@
+package com.untripical.dto.place;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Value;
+
+@Value
+public class PlaceRequestDTO {
+
+    @NotBlank(message = "name must not be blank")
+    String name;
+
+    @NotBlank(message = "city must not be blank")
+    String city;
+
+    @NotNull(message = "latitude must not be null")
+    Double latitude;
+
+    @NotNull(message = "longitude must not be null")
+    Double longitude;
+
+    @NotNull(message = "photoUrl must not be null")
+    String photoUrl;
+
+
+
+}
