@@ -1,16 +1,18 @@
 package com.untripical.mapper.guideDetails;
 
-import com.untripical.dto.announcement.AnnouncementRequestDTO;
-import com.untripical.dto.announcement.AnnouncementResponseDTO;
-import com.untripical.model.Announcement;
+import com.untripical.dto.guideDetails.GuideDetailsRequestDTO;
+import com.untripical.dto.guideDetails.GuideDetailsResponseDTO;
+import com.untripical.model.GuideDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface GuideDetailsMapper {
-    @Mapping(source = "placeId", target = "place.id")
-    Announcement toEntity(AnnouncementRequestDTO dto);
+    @Mapping(source = "userId", target = "user.id")
+    @Mapping(source = "regionId", target = "region.id")
+    GuideDetails toEntity(GuideDetailsRequestDTO dto);
 
-    @Mapping(source = "place.id", target = "placeId")
-    AnnouncementResponseDTO toResponse(Announcement entity);
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "region.id", target = "regionId")
+    GuideDetailsResponseDTO toResponse(GuideDetails entity);
 }

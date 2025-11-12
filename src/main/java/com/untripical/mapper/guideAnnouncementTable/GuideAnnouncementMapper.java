@@ -1,6 +1,7 @@
 package com.untripical.mapper.guideAnnouncementTable;
 
 import com.untripical.dto.guideAnnouncementTable.GuideAnnouncementTableRequestDTO;
+import com.untripical.dto.guideAnnouncementTable.GuideAnnouncementTableResponseDTO;
 import com.untripical.model.GuideAnnouncementTable;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,5 +13,5 @@ public interface GuideAnnouncementMapper {
 
     @Mapping(source = "guideDetails.id", target = "guideDetailsId")
     @Mapping(source = "announcement.id", target = "announcementId")
-    GuideAnnouncementTableRequestDTO toResponseDto(GuideAnnouncementTable entity);
+    GuideAnnouncementTableResponseDTO toResponse (GuideAnnouncementTable entity);
 }

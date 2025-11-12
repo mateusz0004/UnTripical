@@ -23,9 +23,9 @@ public class PlaceRequestDTO {
     String photoUrl;
 
     @NotNull(message = "region_id must not be null")
-    Long region_id;
+    Long regionId;
 
     @NotNull(message = "user_id must not be null")
-    Long user_id;
+    Long userId;
 
 }
