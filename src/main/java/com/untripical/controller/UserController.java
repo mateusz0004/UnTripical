@@ -4,9 +4,7 @@ import com.untripical.dto.userDto.RegisterRequest;
 import com.untripical.model.User;
 import com.untripical.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -21,4 +19,13 @@ public class UserController {
     public String login(@RequestBody LoginRequest login){
         return userService.verify(login);
     }
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+        userService.deleteUser(id);
+    }
+    @PutMapping("/{id}")
+    public User setAdmins(@PathVariable Long id){
+        return userService.setAdmins(id);
+    }
 }
+/// //////// naprawić, żeby logowało bez RequestBody tylko przez BasicAuth

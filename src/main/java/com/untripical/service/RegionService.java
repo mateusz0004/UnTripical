@@ -3,6 +3,7 @@ package com.untripical.service;
 import com.untripical.dto.region.RegionRequestDTO;
 import com.untripical.dto.region.RegionResponseDTO;
 import com.untripical.enums.RegionType;
+import com.untripical.exception.region.RegionAlreadyExistsException;
 import com.untripical.exception.region.RegionDoesNotExist;
 import com.untripical.mapper.region.RegionMapper;
 import com.untripical.model.Region;
@@ -54,6 +55,13 @@ public class RegionService {
     }
 
     public RegionResponseDTO addRegion(RegionRequestDTO dto){
+        boolean exists = regionRepository
+                .findByTypeAndClosestBigCity(dto.getType(), dto.getClosestBigCity())
+                .isPresent();
+        if(exists){
+            throw new RegionAlreadyExistsException(("This region with type: " + dto.getType()
+            + " and this closest big city: " + dto.getClosestBigCity() + " already exist"));
+        }
         Region saved = regionRepository.save(regionMapper.toEntity(dto));
         return regionMapper.toResponse(saved);
     }

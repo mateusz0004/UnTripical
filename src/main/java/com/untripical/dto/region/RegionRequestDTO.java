@@ -13,5 +13,4 @@ public class RegionRequestDTO {
 
     @NotBlank(message = "closestBigCity must not be blank")
     String closestBigCity;
-
 }

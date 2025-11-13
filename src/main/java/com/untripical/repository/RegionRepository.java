@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface RegionRepository extends JpaRepository<Region, Long> {
     Optional<Region> findByType(RegionType type);
     Optional<Region> findByClosestBigCity(String closestBigCity);
+    Optional<Region> findByTypeAndClosestBigCity(RegionType type, String closestBigCity);
 }
