@@ -1,9 +1,12 @@
 package com.untripical.dto.announcement;
 
+import com.untripical.dto.guideAnnouncementTable.GuideAnnouncementTableResponseDTO;
 import com.untripical.enums.AnnouncementType;
 import lombok.Value;
 
 import java.util.Date;
+import java.util.List;
+
 @Value
 public class AnnouncementResponseDTO {
     private final Long id;

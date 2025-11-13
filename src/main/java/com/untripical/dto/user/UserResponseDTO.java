@@ -11,7 +11,6 @@ import java.util.List;
 
 @Value
 public class UserResponseDTO {
-
     Long id;
     String emails;
     String username;

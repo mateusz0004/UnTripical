@@ -9,5 +9,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface RegionMapper {
     Region toEntity(RegionRequestDTO dto);
-    RegionResponseDTO toResponse(RegionMapper entity);
+    RegionResponseDTO toResponse(Region entity);
 }

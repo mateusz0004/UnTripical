@@ -10,11 +10,9 @@ import java.util.List;
 
 @Value
 public class RegionResponseDTO {
-
     Long id;
     RegionType type;
     String closestBigCity;
     List<PlaceResponseDTO> places;
     List<GuideDetailsResponseDTO> guides;
-
 }
