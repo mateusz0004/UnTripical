@@ -23,30 +23,30 @@ public class RegionService {
     @Autowired
     private RegionMapper regionMapper;
 
-    public RegionResponseDTO getRegionById(Long regionId){
-         Region region = findRegionById(regionId);
-         return regionMapper.toResponse(region);
+    public RegionResponseDTO getRegionById(Long regionId) {
+        Region region = findRegionById(regionId);
+        return regionMapper.toResponse(region);
     }
 
-    public RegionResponseDTO getByRegionType(RegionType type){
+    public RegionResponseDTO getByRegionType(RegionType type) {
         Region region = regionRepository.findByType(type)
-                .orElseThrow(()-> new RegionDoesNotExist("Region with this type does not exist"));
-        if(!checkIsActive(region)){
+                .orElseThrow(() -> new RegionDoesNotExist("Region with this type does not exist"));
+        if (!checkIsActive(region)) {
             throw new RegionDoesNotExist("This region is not active");
         }
         return regionMapper.toResponse(region);
     }
 
-    public RegionResponseDTO getByClosestBigCity(String closestBigCity){
+    public RegionResponseDTO getByClosestBigCity(String closestBigCity) {
         Region region = regionRepository.findByClosestBigCity(closestBigCity)
-                .orElseThrow(()-> new RegionDoesNotExist("Region with this closestBigCity does not exist"));
-        if(!checkIsActive(region)){
+                .orElseThrow(() -> new RegionDoesNotExist("Region with this closestBigCity does not exist"));
+        if (!checkIsActive(region)) {
             throw new RegionDoesNotExist("This region is not active");
         }
         return regionMapper.toResponse(region);
     }
 
-    public List<RegionResponseDTO> getAllRegions(){
+    public List<RegionResponseDTO> getAllRegions() {
         return regionRepository.findAll()
                 .stream()
                 .filter(re -> checkIsActive(re))
@@ -54,24 +54,24 @@ public class RegionService {
                 .collect(Collectors.toList());
     }
 
-    public RegionResponseDTO addRegion(RegionRequestDTO dto){
+    public RegionResponseDTO addRegion(RegionRequestDTO dto) {
         boolean exists = regionRepository
                 .findByTypeAndClosestBigCity(dto.getType(), dto.getClosestBigCity())
                 .isPresent();
-        if(exists){
+        if (exists) {
             throw new RegionAlreadyExistsException(("This region with type: " + dto.getType()
-            + " and this closest big city: " + dto.getClosestBigCity() + " already exist"));
+                    + " and this closest big city: " + dto.getClosestBigCity() + " already exist"));
         }
         Region saved = regionRepository.save(regionMapper.toEntity(dto));
         return regionMapper.toResponse(saved);
     }
 
-    public void deleteRegion(Long regionId){
+    public void deleteRegion(Long regionId) {
         Region region = findRegionById(regionId);
         region.setIsActive(false);
     }
 
-    public RegionResponseDTO updateRegion(Long regionId, RegionRequestDTO dto){
+    public RegionResponseDTO updateRegion(Long regionId, RegionRequestDTO dto) {
         Region region = findRegionById(regionId);
         region.setType(dto.getType());
         region.setClosestBigCity(dto.getClosestBigCity());
@@ -80,14 +80,14 @@ public class RegionService {
         return regionMapper.toResponse(updatedRegion);
     }
 
-    public boolean checkIsActive(Region region){
+    public boolean checkIsActive(Region region) {
         return region.getIsActive();
     }
 
-    public Region findRegionById(Long regionId){
+    public Region findRegionById(Long regionId) {
         Region region = regionRepository.findById(regionId)
-                .orElseThrow(()-> new RegionDoesNotExist("This region does not exist"));
-        if(!checkIsActive(region)){
+                .orElseThrow(() -> new RegionDoesNotExist("This region does not exist"));
+        if (!checkIsActive(region)) {
             throw new RegionDoesNotExist("This region is not active");
         }
         return region;

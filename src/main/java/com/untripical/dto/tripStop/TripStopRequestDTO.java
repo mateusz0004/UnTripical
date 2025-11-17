@@ -13,7 +13,7 @@ public class TripStopRequestDTO {
     @NotBlank(message = "description must not be blank")
     String description;
 
-    @NotNull(message = "estimateHour mustnot be null")
+    @NotNull(message = "estimateHour must not be null")
     LocalDateTime estimateHour;
 
     @Min(1)

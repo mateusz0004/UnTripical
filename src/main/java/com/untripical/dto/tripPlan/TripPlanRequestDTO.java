@@ -10,6 +10,5 @@ public class TripPlanRequestDTO {
     @NotBlank(message = "name must not be blank")
     String name;
 
-    @NotNull(message = "userId must not be null")
-    Long userId;
+
 }

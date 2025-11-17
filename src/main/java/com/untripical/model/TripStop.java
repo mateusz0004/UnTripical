@@ -27,10 +27,10 @@ public class TripStop {
     @Column(name = "description")
     private String description;
 
-    @NotBlank (message = "estimateHour must not be blank")
+   // @NotBlank (message = "estimateHour must not be blank")
     @Column(name = "estimate_hour")
-    @NotNull(message = "estimateHouse must not be null")
-    @Future(message = "start time must be in the future")
+    //@NotNull(message = "estimateHouse must not be null")
+    //@Future(message = "start time must be in the future")
     private LocalDateTime estimateHour;
 
     @Min(1)

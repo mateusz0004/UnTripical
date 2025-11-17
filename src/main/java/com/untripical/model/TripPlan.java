@@ -38,13 +38,24 @@ public class TripPlan {
     @JsonManagedReference
     private List<TripStop> tripStops;
 
+    public void addTripStop(TripStop tripStop){
+        this.tripStops.add(tripStop);
+        tripStop.setTripPlan(this);
+    }
+
+    public void removeTripStop (TripStop tripStop){
+        this.tripStops.remove(tripStop);
+        tripStop.setTripPlan(null);
+    }
+
     @ManyToOne
     @JsonBackReference
     @JoinColumn (name = "user_id")
     private User user;
 
     @PrePersist
-    protected void onCreate() {
+    protected void onCreateAndActive() {
+        this.isActive=true;
         this.assignedAt = new Date();
     }
 }

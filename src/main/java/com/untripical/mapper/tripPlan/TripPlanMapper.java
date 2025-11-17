@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface TripPlanMapper {
-    @Mapping(source = "userId", target = "user.id")
     TripPlan toEntity(TripPlanRequestDTO dto);
 
     @Mapping(source = "user.id", target = "userId")
