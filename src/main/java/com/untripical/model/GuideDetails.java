@@ -17,12 +17,8 @@ import java.util.List;
 @Entity
 public class GuideDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "guide_name")
-    @NotBlank(message = "guideName must not be null")
-    private String guideName;
     @Column(name = "phone_number")
     @NotBlank(message = "phoneNumber must not be null")
     private String phoneNumber;
@@ -46,7 +42,8 @@ public class GuideDetails {
     private List<Review>reviews;
     @OneToOne
     @JsonBackReference
-    @JoinColumn(name = "user_id")
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
     @ManyToOne
     @JoinColumn(name = "region_id", nullable = false)

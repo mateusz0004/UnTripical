@@ -57,6 +57,7 @@ public class RegionService {
     public RegionResponseDTO addRegion(RegionRequestDTO dto) {
         boolean exists = regionRepository
                 .findByTypeAndClosestBigCity(dto.getType(), dto.getClosestBigCity())
+                .map(this::checkIsActive)
                 .isPresent();
         if (exists) {
             throw new RegionAlreadyExistsException(("This region with type: " + dto.getType()

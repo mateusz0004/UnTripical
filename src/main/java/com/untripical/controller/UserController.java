@@ -1,31 +1,52 @@
 package com.untripical.controller;
-import com.untripical.dto.userDto.LoginRequest;
-import com.untripical.dto.userDto.RegisterRequest;
+
+import com.untripical.dto.userDto.*;
 import com.untripical.model.User;
 import com.untripical.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/api/user")
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping
+    public UserResponseDTO UserResponseDTO() {
+        return userService.getCurrentUserResponseDTO();
+    }
+
     @PostMapping("/register")
-    public User register(@RequestBody RegisterRequest user){
+    public User register(@RequestBody UserRegisterRequestDTO user) {
         return userService.register(user);
     }
+
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest login){
+    public String login(@RequestBody LoginRequest login) {
         return userService.verify(login);
     }
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
-        userService.deleteUser(id);
+
+    @DeleteMapping
+    public void delete() {
+        userService.deleteUser();
     }
-    @PutMapping("/{id}")
-    public User setAdmins(@PathVariable Long id){
-        return userService.setAdmins(id);
+
+    @PutMapping("/update")
+    public UserUpdateResponseWithTokenDTO updateUser(@RequestBody UserUpdateDTO dto) {
+        return userService.updateUser(dto);
+    }
+
+    @PutMapping("/admin")
+    public UserResponseDTO setAdmins() {
+        return userService.setAdmins();
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteUserOrGuideByAdmin(@PathVariable Long id) {
+        userService.deleteUserByAdmin(id);
     }
 }
-/// //////// naprawić, żeby logowało bez RequestBody tylko przez BasicAuth
+

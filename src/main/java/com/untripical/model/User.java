@@ -49,6 +49,7 @@ public class User {
     private List<TripPlan>tripPlans;
     @PrePersist
     protected void onCreate() {
+        this.isActive = true;
         this.createdAt = new Date();
     }
 }

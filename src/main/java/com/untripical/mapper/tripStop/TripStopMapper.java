@@ -8,11 +8,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface TripStopMapper {
-   // @Mapping(source = "placeId", target = "place.id")
-    @Mapping(source = "tripPlanId", target = "tripPlan.id")
+    @Mapping(source = "placeId", target = "place.id")
     TripStop toEntity(TripStopRequestDTO dto);
 
-   // @Mapping(source = "place.id", target = "placeId")
-    @Mapping(source = "tripPlan.id", target = "tripPlanId")
+    @Mapping(source = "place.id", target = "placeId")
     TripStopResponseDTO toResponse(TripStop entity);
 }

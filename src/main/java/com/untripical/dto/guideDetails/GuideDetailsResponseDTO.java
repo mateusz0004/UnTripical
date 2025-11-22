@@ -4,6 +4,7 @@ import com.untripical.dto.guideAnnouncementTable.GuideAnnouncementTableResponseD
 import com.untripical.dto.review.ReviewResponseDTO;
 import com.untripical.enums.ExperienceLevel;
 import com.untripical.enums.Specialisation;
+import com.untripical.enums.UserRole;
 import com.untripical.model.GuideAnnouncementTable;
 import lombok.Value;
 
@@ -12,13 +13,12 @@ import java.util.List;
 @Value
 public class GuideDetailsResponseDTO {
     Long id;
-    String guideName;
+    String username;
     String phoneNumber;
     String closestBigCity;
     Specialisation specialisation;
     ExperienceLevel experienceLevel;
     int counterOfDidJourney;
-    Long userId;
     Long regionId;
     List<GuideAnnouncementTableResponseDTO> guideAnnouncements;
     List<ReviewResponseDTO> reviews;

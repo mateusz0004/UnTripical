@@ -1,0 +1,148 @@
+package com.untripical.service;
+
+import com.untripical.dto.guideDetails.GuideDetailsResponseDTO;
+import com.untripical.dto.guideDetails.GuideDetailsUpdateResponseWithTokenDTO;
+import com.untripical.dto.userDto.GuideDetailsOrUserRequest;
+import com.untripical.enums.Specialisation;
+import com.untripical.enums.UserRole;
+import com.untripical.exception.guideDetails.GuideDetailsDoesNotExist;
+import com.untripical.exception.user.UserWithThisUsernameAlreadyExist;
+import com.untripical.guideDetailsOrUser.GuideDetailsOrUserUpdateDTO;
+import com.untripical.mapper.guideDetails.GuideDetailsMapper;
+import com.untripical.mapper.user.UserMapper;
+import com.untripical.model.GuideDetails;
+import com.untripical.model.Region;
+import com.untripical.model.User;
+import com.untripical.repository.GuideDetailsRepository;
+import com.untripical.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional
+public class GuideDetailsService {
+    @Autowired
+    private GuideDetailsRepository guideDetailsRepository;
+    @Autowired
+    private GuideDetailsMapper guideDetailsMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private RegionService regionService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder encoder;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private JWTService jwt;
+
+    public GuideDetailsResponseDTO getGuideDetailsById(Long id){
+        GuideDetails guideDetails = guideDetailsRepository.findById(id)
+                .orElseThrow(()-> new GuideDetailsDoesNotExist("This guide does not exist"));
+        return guideDetailsMapper.toResponse(guideDetails);
+    }
+    public GuideDetailsResponseDTO getGuideDetailsByGuideName(String guideName){
+        User user = userRepository.findByUsername(guideName)
+                .orElseThrow(()-> new GuideDetailsDoesNotExist("This guide does not exist"));
+        return getGuideDetailsById(user.getId());
+    }
+
+    public List<GuideDetailsResponseDTO> getGuideDetailsBySpecialisation(Specialisation specialisation){
+        List<GuideDetails> guideDetailsList = guideDetailsRepository.findAllBySpecialisation(specialisation)
+                .orElseThrow(()-> new GuideDetailsDoesNotExist("Guide with this specialisation does not exist"));
+        return guideDetailsList.stream()
+                .map(guideDetailsMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<GuideDetailsResponseDTO> getAllGuideDetails(){
+        return guideDetailsRepository.findAll()
+                .stream()
+                .map(guideDetailsMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public GuideDetailsResponseDTO guideRegister (GuideDetailsOrUserRequest dto){
+        User user = userService.registerForGuides(dto.getRegisterRequest(), UserRole.GUIDE);
+        GuideDetails guideDetails = guideDetailsMapper.toEntity(dto.getGuideDetailsRequestDTO());
+        Region region = regionService.findRegionById(dto.getGuideDetailsRequestDTO().getRegionId());
+        guideDetails.setRegion(region);
+        guideDetails.setUser(user);
+        GuideDetails saved = guideDetailsRepository.save(guideDetails);
+        return guideDetailsMapper.toResponse(saved);
+    }
+
+    public GuideDetailsUpdateResponseWithTokenDTO updateGuideDetails(GuideDetailsOrUserUpdateDTO dto){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        Long currentGuideId = currentUser.getId();
+        GuideDetails currentGuideDetails = guideDetailsRepository.findById(currentGuideId)
+                .orElseThrow(() -> new GuideDetailsDoesNotExist("This guide does not exist"));
+
+        if(dto.getUserUpdateDTO().getEmail() != null)
+            currentUser.setEmail(dto.getUserUpdateDTO().getEmail());
+
+        if(dto.getUserUpdateDTO().getUsername() != null) {
+            if (userRepository.findByUsername(dto.getUserUpdateDTO().getUsername()).isPresent())
+                throw new UserWithThisUsernameAlreadyExist("This username already exists");
+
+            currentUser.setUsername(dto.getUserUpdateDTO().getUsername());
+        }
+
+        if(dto.getUserUpdateDTO().getPassword() != null)
+            currentUser.setPassword(encoder.encode(dto.getUserUpdateDTO().getPassword()));
+
+        if(dto.getGuideDetailsUpdateDTO().getClosestBigCity() != null)
+            currentGuideDetails.setClosestBigCity(dto.getGuideDetailsUpdateDTO().getClosestBigCity());
+
+        if(dto.getGuideDetailsUpdateDTO().getCounterOfDidJourney()>=0)
+            currentGuideDetails.setCounterOfDidJourney(dto.getGuideDetailsUpdateDTO().getCounterOfDidJourney());
+
+        if(dto.getGuideDetailsUpdateDTO().getRegionId()!= null) {
+            Region region = regionService.findRegionById(dto.getGuideDetailsUpdateDTO().getRegionId());
+            currentGuideDetails.setRegion(region);
+        }
+
+        if(dto.getGuideDetailsUpdateDTO().getPhoneNumber()!=null)
+            currentGuideDetails.setPhoneNumber(dto.getGuideDetailsUpdateDTO().getPhoneNumber());
+
+        userRepository.save(currentUser);
+        guideDetailsRepository.save(currentGuideDetails);
+
+        String newToken = jwt.generateToken(currentUser.getUsername());
+
+        return GuideDetailsUpdateResponseWithTokenDTO.builder()
+                .guideDetails(guideDetailsMapper.toResponse(currentGuideDetails))
+                .token(newToken)
+                .build();
+    }
+
+
+    public void deleteGuideDetails(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Long currentGuideId = currentUser.getId();
+        GuideDetails currentGuideDetails = guideDetailsRepository.findById(currentGuideId)
+                .orElseThrow(()-> new GuideDetailsDoesNotExist("This guide does not exist"));
+        userService.deleteUser();
+        guideDetailsRepository.save(currentGuideDetails);
+    }
+
+    public void deleteGuideDetailsWithIdByAdmin(Long id){
+        GuideDetails guideDetails = guideDetailsRepository.findById(id)
+                .orElseThrow(()->new GuideDetailsDoesNotExist("This guide does not exist"));
+        userService.deleteUserByAdmin(id);
+    }
+}

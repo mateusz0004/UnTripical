@@ -1,20 +1,20 @@
 package com.untripical.service;
 
-import com.untripical.dto.userDto.LoginRequest;
-import com.untripical.dto.userDto.RegisterRequest;
+import com.untripical.dto.userDto.*;
 import com.untripical.enums.UserRole;
 import com.untripical.exception.user.IncorrectRoleTypeException;
 import com.untripical.exception.user.UserDoesNotExist;
 import com.untripical.exception.user.UserWithThisUsernameAlreadyExist;
+import com.untripical.mapper.user.UserMapper;
 import com.untripical.model.User;
 import com.untripical.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,43 +28,128 @@ public class UserService {
     private JWTService jwtService;
     @Autowired
     private PasswordEncoder encoder;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private HttpServletRequest request;
 
-    public User register (RegisterRequest dto){
+    public User register(UserRegisterRequestDTO dto) {
+        if (request.getHeader("Authorization") != null) {
+            throw new RuntimeException("You are already logged in");
+        }
+
         User user = new User();
         user.setEmail(dto.getEmail());
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
             throw new UserWithThisUsernameAlreadyExist("This username already exist");
         }
-        if(dto.getRole().toString().equals("ADMIN")){
+        user.setUsername(dto.getUsername());
+        user.setPassword(encoder.encode(dto.getPassword()));
+        user.setUserRole(UserRole.USER);
+        return userRepository.save(user);
+    }
+
+    public User registerForGuides(UserRegisterRequestDTO dto, UserRole role) {
+        if (request.getHeader("Authorization") != null) {
+            throw new RuntimeException("You are already logged in");
+        }
+
+        User user = new User();
+        user.setEmail(dto.getEmail());
+        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
+            throw new UserWithThisUsernameAlreadyExist("This username already exist");
+        }
+        if (role.toString().equals("ADMIN") || role.equals("USER")) {
             throw new IncorrectRoleTypeException("Incorrect role type");
         }
         user.setUsername(dto.getUsername());
         user.setPassword(encoder.encode(dto.getPassword()));
-        user.setUserRole(dto.getRole());
-        user.setIsActive(true);
+        user.setUserRole(role);
         return userRepository.save(user);
     }
-    public String verify (LoginRequest user){
+
+    public UserUpdateResponseWithTokenDTO updateUser(UserUpdateDTO dto) {
+        User user = getCurrentUser();
+        if (dto.getEmail() != null) {
+            user.setEmail(dto.getEmail());
+        }
+        if (dto.getUsername() != null) {
+            user.setUsername(dto.getUsername());
+        }
+        if (dto.getPassword() != null) {
+            user.setPassword(encoder.encode(dto.getPassword()));
+        }
+        userRepository.save(user);
+        SecurityContextHolder.clearContext();
+        String newToken = jwtService.generateToken(user.getUsername());
+
+         return UserUpdateResponseWithTokenDTO.builder()
+                .user(userMapper.toResponse(user))
+                .token(newToken)
+                .build();
+    }
+
+    public String verify(LoginRequest user) {
         Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        if(authentication.isAuthenticated()) return jwtService.generateToken(user.getUsername());
+
+        User currentUser = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new UserDoesNotExist("This user does not exist"));
+
+        if (!currentUser.getIsActive()) {
+            throw new UserDoesNotExist("This account is deactivated");
+        }
+
+        if (authentication.isAuthenticated()){
+            return jwtService.generateToken(user.getUsername());
+        }
         return "fail";
     }
+
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException("This username doesn't exist"));
+                .orElseThrow(() -> new UsernameNotFoundException("This username doesn't exist"));
         return user;
     }
-    public void deleteUser(Long id){
-        userRepository.deleteById(id);
+
+    public UserResponseDTO getCurrentUserResponseDTO() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("This username doesn't exist"));
+        return userMapper.toResponse(user);
     }
-    public User setAdmins(Long id){
-        User admin = userRepository.findById(id).
-                orElseThrow(() -> new UserDoesNotExist("This user does not exist"));
-        if(admin.getUsername().equals("arek")||admin.getUsername().equals("mateusz")){
+
+    public void deleteUser() {
+        User user = getCurrentUser();
+        user.setIsActive(false);
+        userRepository.save(user);
+    }
+
+    public void deleteUserByAdmin(Long id){
+        User user = userRepository.findById(id).
+                orElseThrow(()-> new UserDoesNotExist("This user does not exist"));
+        if(UserRole.ADMIN.equals(user.getUserRole())){
+            throw new RuntimeException("You can not delete other admin");
+        }
+        user.setIsActive(false);
+        userRepository.save(user);
+    }
+
+    public UserResponseDTO setAdmins() {
+        User admin = getCurrentUser();
+        if (admin.getUsername().equals("Arek") || admin.getUsername().equals("Mateusz")) {
             admin.setUserRole(UserRole.ADMIN);
         }
-        return userRepository.save(admin);
+        User saved = userRepository.save(admin);
+        return userMapper.toResponse(saved);
+    }
+
+    public boolean isActive(User user) {
+        if (!user.getIsActive()) {
+            throw new UserDoesNotExist("This user does not exist");
+        }
+        return user.getIsActive();
     }
 }
