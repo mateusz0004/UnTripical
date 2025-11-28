@@ -23,6 +23,10 @@ public class TripStop {
     @Column(name = "id")
     private Long id;
 
+    @NotBlank(message = "name must not be blank")
+    @Column(name = "name")
+    private String name;
+
     @NotBlank (message = "description must not be blank")
     @Column(name = "description")
     private String description;
@@ -42,8 +46,9 @@ public class TripStop {
     @NotNull(message = "distanceToNext must not be null")
     private Double distanceToNext;
 
+
     @ManyToOne
-    @JsonBackReference
+   // @JsonBackReference
     @JoinColumn (name = "trip_plan_id")
     private TripPlan tripPlan;
 

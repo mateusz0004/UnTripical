@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 @Value
 public class TripStopResponseDTO {
 
-    Long id;
+    String name;
     String description;
     LocalDateTime estimateHour;
     int orderIndex;
     Double distanceToNext;
-    Long tripPlanId;
-    Long placeId;
+
+   // Long placeId;
 
 }

@@ -18,4 +18,11 @@ public class TripStopController {
     public ResponseEntity<TripStopResponseDTO> addTripStop (@RequestBody TripStopRequestDTO dto){
         return ResponseEntity.ok(tripStopService.addTripStop(dto));
     }
+
+    @DeleteMapping("/{tripPlanName}/{name}")
+    public ResponseEntity<TripStopResponseDTO> deleteTripStop(@PathVariable String name ,@PathVariable String tripPlanName){
+
+        tripStopService.removeTripStopByName(name, tripPlanName);
+        return ResponseEntity.noContent().build();
+    }
 }

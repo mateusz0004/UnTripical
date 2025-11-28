@@ -20,18 +20,6 @@ public class GuideAnnouncementTable {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank(message = "name must not be blank")
-    @Column(name = "name")
-    private String name;
-
-    @NotNull(message = "date must not be null")
-    @Column(name = "date")
-    private Date date;
-
-    @Min(0)
-    @NotNull(message = "totalDistance must not be null")
-    @Column(name = "total_distance")
-    private Double totalDistance;
 
     @ManyToOne
     @JsonBackReference

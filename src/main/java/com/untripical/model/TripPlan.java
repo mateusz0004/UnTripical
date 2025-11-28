@@ -6,14 +6,21 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Table (name = "trip_plans")
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TripPlan {
 
     @Id
@@ -34,8 +41,8 @@ public class TripPlan {
     @Column (name = "is_active")
     private Boolean isActive;
 
-    @OneToMany (mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+   // @JsonManagedReference
     private List<TripStop> tripStops;
 
     public void addTripStop(TripStop tripStop){
@@ -58,4 +65,5 @@ public class TripPlan {
         this.isActive=true;
         this.assignedAt = new Date();
     }
+
 }

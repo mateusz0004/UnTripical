@@ -1,5 +1,6 @@
 package com.untripical.dto.tripPlan;
 
+import com.untripical.dto.tripStop.TripStopResponseDTO;
 import lombok.Value;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ public class TripPlanResponseDTO {
     String name;
     Date assignedAt;
     Boolean isActive;
-    List<TripPlanResponseDTO> tripStops;
+    List<TripStopResponseDTO> tripStops;
     Long userId;
     Long tripPlanId;
 }
