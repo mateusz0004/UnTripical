@@ -1,6 +1,5 @@
 package com.untripical.dto.review.place;
 
-import com.untripical.model.User;
 import lombok.Value;
 
 import java.util.Date;
