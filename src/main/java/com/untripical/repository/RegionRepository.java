@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface RegionRepository extends JpaRepository<Region, Long> {
+    Optional<Region> findById(Long id);
     Optional<Region> findByType(RegionType type);
     Optional<Region> findByClosestBigCity(String closestBigCity);
     Optional<Region> findByTypeAndClosestBigCity(RegionType type, String closestBigCity);
