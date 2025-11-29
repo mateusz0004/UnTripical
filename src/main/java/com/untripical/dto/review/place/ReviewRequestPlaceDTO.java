@@ -15,13 +15,11 @@ public class ReviewRequestPlaceDTO {
 
     @NotNull(message = "placeId must not be null")
     Long placeId;
-<<<<<<< Updated upstream:src/main/java/com/untripical/dto/review/ReviewRequestDTO.java
 
     @NotNull(message = "userId must not be null")
     Long userId;
 
     @NotNull(message = "guideDetailsId must not be null")
     Long guideDetailsId;
-=======
->>>>>>> Stashed changes:src/main/java/com/untripical/dto/review/place/ReviewRequestPlaceDTO.java
 }
+
