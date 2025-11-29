@@ -4,7 +4,7 @@ import com.untripical.dto.guideDetails.GuideDetailsResponseDTO;
 import com.untripical.dto.guideDetails.GuideDetailsUpdateResponseWithTokenDTO;
 import com.untripical.dto.userDto.GuideDetailsOrUserRequest;
 import com.untripical.enums.Specialisation;
-import com.untripical.guideDetailsOrUser.GuideDetailsOrUserUpdateDTO;
+import com.untripical.dto.guideDetailsOrUser.GuideDetailsOrUserUpdateDTO;
 import com.untripical.service.GuideDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

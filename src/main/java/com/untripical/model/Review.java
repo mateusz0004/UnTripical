@@ -20,6 +20,14 @@ public class Review {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "orderIndex must not be null")
+    @Column(name = "order_index")
+    private Integer orderIndex;
+
+    @NotNull(message = "isActive must not be null")
+    @Column(name = "is_active")
+    private Boolean isActive;
+
     @Min(1)
     @Max(5)
     @NotNull (message = "numberOfStars must not be null")
@@ -42,8 +50,8 @@ public class Review {
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn (name = "user_id")
     private User user;
+
 
     @ManyToOne
     @JsonBackReference
@@ -53,5 +61,6 @@ public class Review {
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();
+        this.isActive = true;
     }
 }

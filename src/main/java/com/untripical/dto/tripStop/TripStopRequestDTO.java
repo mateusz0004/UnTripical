@@ -16,9 +16,6 @@ public class TripStopRequestDTO {
     @NotNull(message = "estimateHour must not be null")
     LocalDateTime estimateHour;
 
-    @Min(1)
-    int orderIndex;
-
     @NotNull(message = "distanceToNext must not be null")
     Double distanceToNext;
 
