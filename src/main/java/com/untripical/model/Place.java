@@ -42,6 +42,7 @@ public class Place {
     private List<TripStop> tripStops;
     @JsonManagedReference
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "order_index")
     private List<Review> reviews;
     @JsonBackReference
     @ManyToOne

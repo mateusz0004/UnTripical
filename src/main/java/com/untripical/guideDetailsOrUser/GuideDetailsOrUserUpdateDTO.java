@@ -1,4 +1,4 @@
-package com.untripical.guideDetailsOrUser;
+package com.untripical.dto.guideDetailsOrUser;
 
 import com.untripical.dto.guideDetails.GuideDetailsUpdateDTO;
 import com.untripical.dto.userDto.UserUpdateDTO;

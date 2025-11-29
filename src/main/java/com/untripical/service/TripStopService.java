@@ -40,6 +40,9 @@ public class TripStopService {
     @Autowired
     private TripStopMapper tripStopMapper;
 
+    @Autowired
+    private DistanceService distanceService;
+
 
 
     public TripStopResponseDTO addTripStop(TripStopRequestDTO dto) {
@@ -51,11 +54,16 @@ public class TripStopService {
 
 //        Place place = placeRepository.findById(dto.getPlaceId())
 //                .orElseThrow(() -> new PlaceDoesNotExist("Place with ID " + dto.getPlaceId() + " does not exist"));
+        int amountOfTripStopsInTripPlan = tripPlan.getTripStops().size();
 
         TripStop newTripStop = new TripStop();
         newTripStop.setDescription(dto.getDescription());
         newTripStop.setEstimateHour(dto.getEstimateHour());
-        newTripStop.setOrderIndex(dto.getOrderIndex());
+        if(tripPlan.getTripStops()==null){
+            newTripStop.setOrderIndex(1);
+        }else{
+            newTripStop.setOrderIndex(amountOfTripStopsInTripPlan);
+        }///// poprpawiłem ten orderIndex, bo podawany był z palca
         newTripStop.setDistanceToNext(dto.getDistanceToNext());
 
        // newTripStop.setPlace(place);
@@ -63,10 +71,20 @@ public class TripStopService {
 
         tripPlan.addTripStop(newTripStop);
 
+        TripStop origin = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-2);
+        TripStop destination = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-1);
+
+        if(tripPlan.getTripStops().size()>1){
+            try {
+                double distance = distanceService.getDistanceInKm(origin.getPlace().getName(), destination.getPlace().getName());
+                origin.setDistanceToNext(distance);
+                tripStopRepository.save(origin);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }////////////////napisałem tą kalkulacje miedzy tripstopami
+
         TripStop saved = tripStopRepository.save(newTripStop);
-
         return tripStopMapper.toResponse(saved);
-
-
     }
 }
