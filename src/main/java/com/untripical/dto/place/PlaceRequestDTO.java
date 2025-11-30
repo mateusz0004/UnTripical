@@ -13,6 +13,12 @@ public class PlaceRequestDTO {
     @NotBlank(message = "city must not be blank")
     String city;
 
+    @NotBlank(message = "addressStreet must not be blank")
+    String addressStreet;
+
+    @NotBlank(message = "addressNumber must not be blank")
+    String addressNumber;
+
     @NotBlank(message = "photoUrl must not be blank")
     String photoUrl;
 

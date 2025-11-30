@@ -18,8 +18,5 @@ public class ReviewRequestPlaceDTO {
 
     @NotNull(message = "userId must not be null")
     Long userId;
-
-    @NotNull(message = "guideDetailsId must not be null")
-    Long guideDetailsId;
 }
 

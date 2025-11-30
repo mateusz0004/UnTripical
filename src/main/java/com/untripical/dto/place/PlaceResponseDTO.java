@@ -3,15 +3,17 @@ package com.untripical.dto.place;
 import com.untripical.dto.announcement.AnnouncementResponseDTO;
 import com.untripical.dto.review.place.ReviewResponsePlaceDTO;
 import com.untripical.enums.VerificationStatus;
-import lombok.Value;
+import lombok.Data;
 
 import java.util.List;
 
-@Value
+@Data
 public class PlaceResponseDTO {
     Long id;
     String name;
     String city;
+    String addressStreet;
+    String addressNumber;
     VerificationStatus verificationStatus;
     String photoUrl;
     Long regionId;

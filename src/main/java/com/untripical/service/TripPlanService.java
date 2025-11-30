@@ -71,5 +71,4 @@ public class TripPlanService {
 
         return allTripPlans.stream().map(tripPlanMapper::toResponse).collect(Collectors.toList());
     }
-
 }

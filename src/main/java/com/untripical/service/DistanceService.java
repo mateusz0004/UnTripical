@@ -17,14 +17,12 @@ public class DistanceService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public double getDistanceInKm(String origin, String destination) throws Exception {
-
         String url = String.format(
-                "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&mode=driving&key=%s",
+                "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&mode=driving&region=pl&key=%s",
                 URLEncoder.encode(origin, StandardCharsets.UTF_8),
                 URLEncoder.encode(destination, StandardCharsets.UTF_8),
                 apiKey
         );
-
         String response = restTemplate.getForObject(url, String.class);
         JsonNode root = objectMapper.readTree(response);
 

@@ -6,9 +6,6 @@ import lombok.Value;
 
 @Value
 public class TripPlanRequestDTO {
-
     @NotBlank(message = "name must not be blank")
     String name;
-
-
 }

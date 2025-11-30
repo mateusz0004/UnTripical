@@ -27,9 +27,19 @@ public class Place {
     @NotBlank(message = "city must not be blank")
     private String city;
 
+    @NotBlank(message = "address street must not be blank")
+    @Column(name = "address_street")
+    private String addressStreet;
+
+    @NotBlank(message = "address must not be blank")
+    @Column(name = "address_number")
+    private String addressNumber;
+
+
     @Column(name = "is_active")
     @NotNull(message = "isActive must not be null")
     private Boolean isActive;
+
 
     @Column(name = "photo_url")
     @NotBlank(message = "photoUrl must not be blank")

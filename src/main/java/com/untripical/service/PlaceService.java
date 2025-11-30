@@ -71,7 +71,9 @@ public class PlaceService {
 
     public PlaceResponseDTO addPlaceResponse(PlaceRequestDTO dto){
         Place place = placeRepository.findByName(dto.getName());
-        if(place!=null){
+        if(place!=null&&place.getCity().equals(dto.getCity())
+                &&place.getAddressStreet().equals(dto.getAddressStreet())
+                &&place.getAddressNumber().equals(dto.getAddressNumber())){
             throw new PlaceWithNameIsExisting("Place with this name is existing");
         }
 
@@ -82,6 +84,8 @@ public class PlaceService {
         entity.setUser(actualUser);
         entity.setRegion(region);
         entity.setStatus(VerificationStatus.WAITING_FOR_APPROVAL);
+        entity.setAddressNumber(dto.getAddressNumber());
+        entity.setAddressStreet(dto.getAddressStreet());
         Place saved = placeRepository.save(entity);
 
         return placeMapper.toResponse(saved);
@@ -112,6 +116,12 @@ public class PlaceService {
 
         if(dto.getPhotoUrl()!=null){
             place.setPhotoUrl(dto.getPhotoUrl());
+        }
+        if(dto.getAddressStreet()!=null){
+            place.setAddressStreet(dto.getAddressStreet());
+        }
+        if(dto.getAddressNumber()!=null){
+            place.setAddressNumber(dto.getAddressNumber());
         }
 
         Place saved = placeRepository.save(place);
