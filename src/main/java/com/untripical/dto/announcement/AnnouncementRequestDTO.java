@@ -1,5 +1,6 @@
 package com.untripical.dto.announcement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.untripical.dto.guideAnnouncementTable.GuideAnnouncementTableRequestDTO;
 import com.untripical.enums.AnnouncementType;
 import jakarta.validation.constraints.Min;
@@ -8,39 +9,37 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Value;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Value
 public class AnnouncementRequestDTO {
     @NotBlank(message = "nameOfJourney must not be blank")
-    private String nameOfJourney;
+    String nameOfJourney;
 
     @NotBlank(message = "description must not be blank")
-    private String description;
+    String description;
 
     @NotNull(message = "announcementType must not be null")
-    private AnnouncementType announcementType;
+    AnnouncementType announcementType;
 
     @NotNull(message = "date must not be null")
-    private Date date;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    LocalDate date;
 
     @NotNull(message = "price must not be null")
     @Min(0)
-    private Double price;
+    Double price;
 
     @NotBlank(message = "locationInfo must not be blank")
-    private String locationInfo;
+    String locationInfo;
 
     @NotNull(message = "maxParticipants must not be null")
     @Positive
-    private Integer maxParticipants;
+    Integer maxParticipants;
 
-    @NotNull(message = "isActive must not be null")
-    private Boolean isActive;
 
-    private List<GuideAnnouncementTableRequestDTO> guideAnnouncementTableRequestDTOList;
-
-    @NotNull(message = "placeId must not be null")
-    private Long placeId;
+   // @NotNull(message = "placeId must not be null")
+    Long placeId;
 }

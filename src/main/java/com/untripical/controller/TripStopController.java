@@ -18,4 +18,5 @@ public class TripStopController {
     public ResponseEntity<TripStopResponseDTO> addTripStop (@RequestBody TripStopRequestDTO dto){
         return ResponseEntity.ok(tripStopService.addTripStop(dto));
     }
+
 }

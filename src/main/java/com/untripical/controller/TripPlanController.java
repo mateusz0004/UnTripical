@@ -6,8 +6,12 @@ import com.untripical.model.TripPlan;
 import com.untripical.service.TripPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.List;
 
 @RequestMapping("/api/plan")
@@ -24,12 +28,29 @@ public class TripPlanController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<TripPlanResponseDTO> getTripPlanById (@PathVariable String name){
+    public ResponseEntity<TripPlanResponseDTO> getTripPlanByName (@PathVariable String name){
         return ResponseEntity.ok(tripPlanService.getTripPlanByName(name));
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<TripPlanResponseDTO>> getAllTripPlans (){
         return ResponseEntity.ok(tripPlanService.getAllTripPlans());
+    }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<TripPlanResponseDTO> deleteTripPlan (@PathVariable String name){
+        tripPlanService.deleteTripPlan(name);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/date")
+    public ResponseEntity<List<TripPlanResponseDTO>> getTripPlanByDate(@RequestBody TripPlanRequestDTO dto){
+        return ResponseEntity.ok(tripPlanService.getTripPlanByDate(dto.getDate()));
+    }
+
+    @PutMapping("/update/{name}")
+    public ResponseEntity<TripPlanResponseDTO> updateTripPlan(@RequestBody TripPlanRequestDTO dto, @PathVariable String name){
+        return ResponseEntity.ok(tripPlanService.updateTripPlan(dto, name));
+
     }
 }

@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -37,9 +38,8 @@ public class Announcement {
     private AnnouncementType announcementType;
 
     @NotNull(message = "date must not be null")
-    @Temporal(TemporalType.DATE)
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     @NotNull(message = "price must not be null")
     @Column(name = "price")
@@ -70,12 +70,14 @@ public class Announcement {
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "place_id", nullable = true)
     private Place place;
 
     @PrePersist
-    protected void onCreate() {
+    protected void onCreateAndSetIsActiveTrue() {
+
         this.createdAt = new Date();
+        this.isActive = true;
     }
 
 }
