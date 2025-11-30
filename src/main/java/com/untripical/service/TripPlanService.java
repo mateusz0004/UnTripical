@@ -145,5 +145,4 @@ public class TripPlanService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserDoesNotExist("User " + username + " does not exist"));
     }
-
 }

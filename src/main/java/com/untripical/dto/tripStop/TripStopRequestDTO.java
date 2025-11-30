@@ -16,12 +16,6 @@ public class TripStopRequestDTO {
     @NotBlank(message = "description must not be blank")
     String description;
 
-    @NotNull(message = "estimateHour must not be null")
-    LocalDateTime estimateHour;
-
-    @NotNull(message = "distanceToNext must not be null")
-    Double distanceToNext;
-
     @NotNull(message = "tripPlanId must not be null")
     Long tripPlanId;
 

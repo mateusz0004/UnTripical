@@ -23,19 +23,9 @@ public class TripStop {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank(message = "name must not be blank")
-    @Column(name = "name")
-    private String name;
-
     @NotBlank (message = "description must not be blank")
     @Column(name = "description")
     private String description;
-
-   // @NotBlank (message = "estimateHour must not be blank")
-    @Column(name = "estimate_hour")
-    //@NotNull(message = "estimateHouse must not be null")
-    //@Future(message = "start time must be in the future")
-    private LocalDateTime estimateHour;
 
     @Min(1)
     @Column(name = "order_index")
@@ -43,12 +33,10 @@ public class TripStop {
     private int orderIndex;
 
     @Column(name = "distance_to_next")
-    @NotNull(message = "distanceToNext must not be null")
     private Double distanceToNext;
-
-
+    /// dddac is_active
     @ManyToOne
-   // @JsonBackReference
+    @JsonBackReference
     @JoinColumn (name = "trip_plan_id")
     private TripPlan tripPlan;
 

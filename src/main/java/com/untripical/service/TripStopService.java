@@ -1,11 +1,9 @@
 package com.untripical.service;
 
-import com.untripical.dto.region.RegionRequestDTO;
 import com.untripical.dto.tripStop.TripStopRequestDTO;
 import com.untripical.dto.tripStop.TripStopResponseDTO;
 import com.untripical.exception.place.PlaceDoesNotExist;
 import com.untripical.exception.tripPlan.TripPlanDoesNotExist;
-import com.untripical.exception.tripStop.TripStopAlreadyExists;
 import com.untripical.mapper.tripStop.TripStopMapper;
 import com.untripical.model.Place;
 import com.untripical.model.TripPlan;
@@ -18,9 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -53,43 +48,38 @@ public class TripStopService {
         TripPlan tripPlan = tripPlanRepository.findByIdAndUser_Username(dto.getTripPlanId(), username)
                 .orElseThrow(() -> new TripPlanDoesNotExist("Trip plan with ID " + dto.getTripPlanId() + " does not exist"));
 
-//        Place place = placeRepository.findById(dto.getPlaceId())
-//                .orElseThrow(() -> new PlaceDoesNotExist("Place with ID " + dto.getPlaceId() + " does not exist"));
-
-        int currentMaxOrderIndex = tripStopRepository.findMaxOrderIndexByTripPlanId(tripPlan.getId());
-        int newMaxOrderIndex = currentMaxOrderIndex + 1;
-
-        if(tripStopRepository.existsByNameAndTripPlan_Id(dto.getName(),tripPlan.getId())){
-            throw new TripStopAlreadyExists("This trip stop already exists");
-        }
+        Place place = placeRepository.findById(dto.getPlaceId())
+                .orElseThrow(() -> new PlaceDoesNotExist("Place with ID " + dto.getPlaceId() + " does not exist"));
+        int amountOfTripStopsInTripPlan = tripPlan.getTripStops().size();
 
         TripStop newTripStop = new TripStop();
-        newTripStop.setName(dto.getName());
         newTripStop.setDescription(dto.getDescription());
-        newTripStop.setEstimateHour(dto.getEstimateHour());
-        newTripStop.setOrderIndex(newMaxOrderIndex);
-
-        // newTripStop.setPlace(place);
-
+        newTripStop.setOrderIndex(amountOfTripStopsInTripPlan + 1);
+        newTripStop.setPlace(place);
         newTripStop.setTripPlan(tripPlan);
+
         tripPlan.addTripStop(newTripStop);
 
-        if(currentMaxOrderIndex>1){
+
+        if(amountOfTripStopsInTripPlan>=1){
             try {
-                TripStop origin = tripPlan.getTripStops().get(currentMaxOrderIndex-1);
-                TripStop destination = tripPlan.getTripStops().get(currentMaxOrderIndex);
-                double distance = distanceService.getDistanceInKm(origin.getName(), destination.getName());
+                TripStop origin = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-1);
+                TripStop destination = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan);
+                String tempOriginAddress = origin.getPlace().getAddressStreet() + " " + origin.getPlace().getAddressNumber() + ", " + origin.getPlace().getCity();
+                String tempDestinationAddress = destination.getPlace().getAddressStreet() + " " + destination.getPlace().getAddressNumber() + ", " + destination.getPlace().getCity();
+                double distance = distanceService.getDistanceInKm(tempOriginAddress, tempDestinationAddress);
                 origin.setDistanceToNext(distance);
+                destination.setDistanceToNext(0.0);
                 tripStopRepository.save(origin);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }else{
-            newTripStop.setDistanceToNext(0d);
+            newTripStop.setDistanceToNext(0.0);
         }
-        ////////////////napisałem tą kalkulacje miedzy tripstopami
 
         TripStop saved = tripStopRepository.save(newTripStop);
         return tripStopMapper.toResponse(saved);
     }
+    /// posprawdzać czy nie powinienem najpierw tego poustawiać i czy nie pobieram z bazy czegos a ona jest pusta
 }

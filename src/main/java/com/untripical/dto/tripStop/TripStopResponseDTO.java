@@ -6,13 +6,9 @@ import java.time.LocalDateTime;
 
 @Value
 public class TripStopResponseDTO {
-
-    String name;
+    Long id;
     String description;
-    LocalDateTime estimateHour;
     int orderIndex;
     Double distanceToNext;
-
-   // Long placeId;
-
+    Long placeId;
 }
