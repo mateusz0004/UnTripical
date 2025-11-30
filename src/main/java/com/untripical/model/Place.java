@@ -18,40 +18,53 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "name")
     @NotBlank(message = "name must not be blank")
     private String name;
+
     @Column(name = "city")
     @NotBlank(message = "city must not be blank")
     private String city;
-    @Column(name = "latitude")
-    @NotNull(message = "latitude must not be null")
-    private Double latitude;
-    @Column(name = "longitude")
-    @NotNull(message = "longitude must not be null")
-    private Double longitude;
+
+    @Column(name = "is_active")
+    @NotNull(message = "isActive must not be null")
+    private Boolean isActive;
+
     @Column(name = "photo_url")
     @NotBlank(message = "photoUrl must not be blank")
     private String photoUrl;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     @NotNull(message = "status must not be null")
     private VerificationStatus status;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TripStop> tripStops;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "order_index")
     private List<Review> reviews;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Announcement> announcements;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @PrePersist
+    protected void onCreate() {
+        this.isActive = true;
+    }
 }

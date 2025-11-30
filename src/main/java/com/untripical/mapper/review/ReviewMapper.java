@@ -1,19 +1,25 @@
 package com.untripical.mapper.review;
-import com.untripical.dto.review.ReviewRequestDTO;
-import com.untripical.dto.review.ReviewResponseDTO;
+import com.untripical.dto.review.guide.ReviewRequestGuideDetailsDTO;
+import com.untripical.dto.review.guide.ReviewResponseGuideDetailsDTO;
+import com.untripical.dto.review.place.ReviewRequestPlaceDTO;
+import com.untripical.dto.review.place.ReviewResponsePlaceDTO;
 import com.untripical.model.Review;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
-    @Mapping(source = "guideDetailsId", target = "guideDetails.id")
-    @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "placeId", target = "place.id")
-    Review toEntity(ReviewRequestDTO dto);
+    Review toPlaceEntity(ReviewRequestPlaceDTO dto);
 
-    @Mapping(source = "guideDetails.id", target = "guideDetailsId")
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "guideId", target = "user.id")
+    Review toGuideDetailsEntity(ReviewRequestGuideDetailsDTO dto);
+
+    @Mapping(source = "user.username", target = "usernameWhoWroteReview")
     @Mapping(source = "place.id", target = "placeId")
-    ReviewResponseDTO toResponse(Review entity);
+    ReviewResponsePlaceDTO toPlaceResponse(Review entity);
+
+    @Mapping(source = "user.username", target = "usernameWhoWroteReview")
+    @Mapping(source = "user.id", target = "guideId")
+    ReviewResponseGuideDetailsDTO toGuideDetailsResponse(Review entity);
 }

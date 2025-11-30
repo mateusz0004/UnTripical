@@ -5,8 +5,6 @@ import com.untripical.dto.tripStop.TripStopRequestDTO;
 import com.untripical.dto.tripStop.TripStopResponseDTO;
 import com.untripical.exception.place.PlaceDoesNotExist;
 import com.untripical.exception.tripPlan.TripPlanDoesNotExist;
-import com.untripical.exception.tripStop.TripStopAlreadyExists;
-import com.untripical.exception.tripStop.TripStopDoesNotExist;
 import com.untripical.mapper.tripStop.TripStopMapper;
 import com.untripical.model.Place;
 import com.untripical.model.TripPlan;
@@ -26,8 +24,8 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 
-//TODO: dodaj obsługę Place, odkomentuj pola związane z Place
-
+//TODO: pola przystanków w tripPLanie mają null, dodaj obsługę Place, zabezpiecz, żeby nie można było dodawać tripStopa
+//TODO: do planu, który nie istnieje, problem z EstimateHour, odkomentuj pola związane z Place
 public class TripStopService {
 
     @Autowired
@@ -42,66 +40,51 @@ public class TripStopService {
     @Autowired
     private TripStopMapper tripStopMapper;
 
+    @Autowired
+    private DistanceService distanceService;
+
 
 
     public TripStopResponseDTO addTripStop(TripStopRequestDTO dto) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        TripPlan tripPlan = tripPlanRepository.findByNameAndIsActiveTrueAndUser_Username(dto.getTripPlanName(), username)
-                .orElseThrow(() -> new TripPlanDoesNotExist("Trip plan " + dto.getTripPlanName() + " does not exist"));
+        TripPlan tripPlan = tripPlanRepository.findByIdAndUser_Username(dto.getTripPlanId(), username)
+                .orElseThrow(() -> new TripPlanDoesNotExist("Trip plan with ID " + dto.getTripPlanId() + " does not exist"));
 
 //        Place place = placeRepository.findById(dto.getPlaceId())
 //                .orElseThrow(() -> new PlaceDoesNotExist("Place with ID " + dto.getPlaceId() + " does not exist"));
-
-        int currentMaxOrderIndex = tripStopRepository.findMaxOrderIndexByTripPlanId(tripPlan.getId());
-        int newMaxOrderIndex = currentMaxOrderIndex + 1;
-
-        if(tripStopRepository.existsByNameAndTripPlan_Id(dto.getName(),tripPlan.getId())){
-            throw new TripStopAlreadyExists("This trip stop already exists");
-        }
+        int amountOfTripStopsInTripPlan = tripPlan.getTripStops().size();
 
         TripStop newTripStop = new TripStop();
-        newTripStop.setName(dto.getName());
         newTripStop.setDescription(dto.getDescription());
         newTripStop.setEstimateHour(dto.getEstimateHour());
-        newTripStop.setOrderIndex(newMaxOrderIndex);
+        if(tripPlan.getTripStops()==null){
+            newTripStop.setOrderIndex(1);
+        }else{
+            newTripStop.setOrderIndex(amountOfTripStopsInTripPlan);
+        }///// poprpawiłem ten orderIndex, bo podawany był z palca
         newTripStop.setDistanceToNext(dto.getDistanceToNext());
-        newTripStop.setTripPlan(tripPlan);
 
-       // newTripStop.setPlace(place);
+        // newTripStop.setPlace(place);
+        newTripStop.setTripPlan(tripPlan);
 
         tripPlan.addTripStop(newTripStop);
 
+        TripStop origin = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-2);
+        TripStop destination = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-1);
+
+        if(tripPlan.getTripStops().size()>1){
+            try {
+                double distance = distanceService.getDistanceInKm(origin.getPlace().getName(), destination.getPlace().getName());
+                origin.setDistanceToNext(distance);
+                tripStopRepository.save(origin);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }////////////////napisałem tą kalkulacje miedzy tripstopami
+
         TripStop saved = tripStopRepository.save(newTripStop);
-
         return tripStopMapper.toResponse(saved);
-    }
-
-    public void removeTripStopByName(String name, String tripPlanName){
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        TripPlan tripPlan = tripPlanRepository.findByNameAndUser_Username(tripPlanName, username)
-                .orElseThrow(() -> new TripPlanDoesNotExist("Trip plan with name " + tripPlanName + " does not exist"));
-
-        if(!tripPlan.getIsActive()){
-            throw new TripPlanDoesNotExist("Trip plan is inactive");
-        }
-
-        TripStop tripStop = tripPlan.getTripStops().stream()
-                .filter(s -> s.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new TripStopDoesNotExist("TripStop " + name + "does not exist in this plan"));
-
-        tripPlan.getTripStops().remove(tripStop);
-
-        int i = 1;
-        for (TripStop s : tripPlan.getTripStops()){
-            s.setOrderIndex(i++);
-        }
-
-        tripPlanRepository.save(tripPlan);
-
     }
 }

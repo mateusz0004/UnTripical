@@ -1,11 +1,11 @@
-package com.untripical.dto.review;
+package com.untripical.dto.review.place;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
 @Value
-public class ReviewRequestDTO {
+public class ReviewRequestPlaceDTO {
 
     @NotNull(message = "numberOfStars must not be null")
     Double numberOfStars;
@@ -18,7 +18,5 @@ public class ReviewRequestDTO {
 
     @NotNull(message = "userId must not be null")
     Long userId;
-
-    @NotNull(message = "guideDetailsId must not be null")
-    Long guideDetailsId;
 }
+
