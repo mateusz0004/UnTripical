@@ -16,8 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,15 +101,49 @@ public class TripPlanService {
 
     public boolean checkIsActive(TripPlan tripPlan){return tripPlan.getIsActive();}
 
-
-    //TODO: DO NAPRAWY
-    public List<TripPlanResponseDTO> getTripPlanByDate (Date date){
+    public List<TripPlanResponseDTO> getTripPlanByDate (LocalDate date){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<TripPlan> tripPlansByDate = tripPlanRepository.findByAssignedAtAndUser_Username(date, username)
+        List<TripPlan> tripPlansByDate = tripPlanRepository.findByDateAndUser_Username(date, username)
                 .orElseThrow(() -> new TripPlanDoesNotExist("Trip plan with this Date " + date + " does not exist"));
 
         return tripPlansByDate.stream().filter(this::checkIsActive).map(tripPlanMapper::toResponse).collect(Collectors.toList());
+    }
+
+    public TripPlanResponseDTO updateTripPlan (TripPlanRequestDTO dto, String name){
+
+        User user = validation();
+
+        TripPlan tripPlan = tripPlanRepository.findByNameAndIsActiveTrueAndUser_Username(name, user.getUsername())
+                .orElseThrow(() -> new TripPlanDoesNotExist("This trip plan does not exist"));
+
+        if(dto.getName() != null){
+
+            boolean exists = tripPlanRepository.findByNameAndIsActiveTrueAndUser_Username(dto.getName(), user.getUsername())
+                    .map(TripPlan::getIsActive)
+                    .isPresent();
+
+            if(exists){
+                throw new TripPlanAlreadyExists("Trip Plan with name: " + dto.getName() + " already exist.");
+            }
+
+            tripPlan.setName(dto.getName());
+        }
+
+        if(dto.getDate() != null){
+            tripPlan.setDate(dto.getDate());
+        }
+
+        tripPlanRepository.save(tripPlan);
+        return tripPlanMapper.toResponse(tripPlan);
+    }
+
+    public User validation(){
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserDoesNotExist("User " + username + " does not exist"));
     }
 
 }

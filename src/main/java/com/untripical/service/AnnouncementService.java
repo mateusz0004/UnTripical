@@ -177,7 +177,7 @@ public class AnnouncementService {
 
         if(dto.getNameOfJourney() != null){
             Announcement announcement1 = announcementRepository.findByNameOfJourney(dto.getNameOfJourney())
-                    .orElseThrow(()-> new AnnouncementDoesNotExist("This announcement does not exist"));
+                    .orElseThrow();
 
             if(announcement1.getIsActive()){
                 throw new AnnouncementAlreadyExists("Announcement with this name already exist");

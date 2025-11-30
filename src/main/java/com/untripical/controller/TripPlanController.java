@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,13 @@ public class TripPlanController {
     }
 
     @GetMapping("/date")
-    public ResponseEntity<List<TripPlanResponseDTO>> getTripPlanByDate(@RequestBody Date date){
-        return ResponseEntity.ok(tripPlanService.getTripPlanByDate(date));
+    public ResponseEntity<List<TripPlanResponseDTO>> getTripPlanByDate(@RequestBody TripPlanRequestDTO dto){
+        return ResponseEntity.ok(tripPlanService.getTripPlanByDate(dto.getDate()));
+    }
+
+    @PutMapping("/update/{name}")
+    public ResponseEntity<TripPlanResponseDTO> updateTripPlan(@RequestBody TripPlanRequestDTO dto, @PathVariable String name){
+        return ResponseEntity.ok(tripPlanService.updateTripPlan(dto, name));
+
     }
 }

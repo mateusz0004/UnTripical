@@ -5,6 +5,7 @@ import com.untripical.dto.tripStop.TripStopRequestDTO;
 import com.untripical.dto.tripStop.TripStopResponseDTO;
 import com.untripical.exception.place.PlaceDoesNotExist;
 import com.untripical.exception.tripPlan.TripPlanDoesNotExist;
+import com.untripical.exception.tripStop.TripStopAlreadyExists;
 import com.untripical.mapper.tripStop.TripStopMapper;
 import com.untripical.model.Place;
 import com.untripical.model.TripPlan;
@@ -54,35 +55,39 @@ public class TripStopService {
 
 //        Place place = placeRepository.findById(dto.getPlaceId())
 //                .orElseThrow(() -> new PlaceDoesNotExist("Place with ID " + dto.getPlaceId() + " does not exist"));
-        int amountOfTripStopsInTripPlan = tripPlan.getTripStops().size();
+
+        int currentMaxOrderIndex = tripStopRepository.findMaxOrderIndexByTripPlanId(tripPlan.getId());
+        int newMaxOrderIndex = currentMaxOrderIndex + 1;
+
+        if(tripStopRepository.existsByNameAndTripPlan_Id(dto.getName(),tripPlan.getId())){
+            throw new TripStopAlreadyExists("This trip stop already exists");
+        }
 
         TripStop newTripStop = new TripStop();
+        newTripStop.setName(dto.getName());
         newTripStop.setDescription(dto.getDescription());
         newTripStop.setEstimateHour(dto.getEstimateHour());
-        if(tripPlan.getTripStops()==null){
-            newTripStop.setOrderIndex(1);
-        }else{
-            newTripStop.setOrderIndex(amountOfTripStopsInTripPlan);
-        }///// poprpawiłem ten orderIndex, bo podawany był z palca
-        newTripStop.setDistanceToNext(dto.getDistanceToNext());
+        newTripStop.setOrderIndex(newMaxOrderIndex);
 
         // newTripStop.setPlace(place);
-        newTripStop.setTripPlan(tripPlan);
 
+        newTripStop.setTripPlan(tripPlan);
         tripPlan.addTripStop(newTripStop);
 
-        TripStop origin = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-2);
-        TripStop destination = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-1);
-
-        if(tripPlan.getTripStops().size()>1){
+        if(currentMaxOrderIndex>1){
             try {
-                double distance = distanceService.getDistanceInKm(origin.getPlace().getName(), destination.getPlace().getName());
+                TripStop origin = tripPlan.getTripStops().get(currentMaxOrderIndex-1);
+                TripStop destination = tripPlan.getTripStops().get(currentMaxOrderIndex);
+                double distance = distanceService.getDistanceInKm(origin.getName(), destination.getName());
                 origin.setDistanceToNext(distance);
                 tripStopRepository.save(origin);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }////////////////napisałem tą kalkulacje miedzy tripstopami
+        }else{
+            newTripStop.setDistanceToNext(0d);
+        }
+        ////////////////napisałem tą kalkulacje miedzy tripstopami
 
         TripStop saved = tripStopRepository.save(newTripStop);
         return tripStopMapper.toResponse(saved);

@@ -2,6 +2,7 @@ package com.untripical.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +42,11 @@ public class TripPlan {
     @NotNull (message = "isActive must not be null")
     @Column (name = "is_active")
     private Boolean isActive;
+
+    @NotNull(message = "date must not be null")
+    @Column (name = "date")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate date;
 
     @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
    // @JsonManagedReference
