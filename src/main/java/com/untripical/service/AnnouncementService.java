@@ -6,6 +6,7 @@ import com.untripical.dto.announcement.AnnouncementUpdateDTO;
 import com.untripical.enums.AnnouncementType;
 import com.untripical.exception.announcement.AnnouncementDoesNotExist;
 import com.untripical.exception.announcement.ListOfAnnouncementDoesNotExist;
+import com.untripical.exception.place.PlaceDoesNotExist;
 import com.untripical.exception.user.UserDoesNotExist;
 import com.untripical.mapper.announcement.AnnouncementMapper;
 import com.untripical.mapper.guideAnnouncementTable.GuideAnnouncementMapper;
@@ -66,7 +67,14 @@ public class AnnouncementService {
             throw new AnnouncementAlreadyExists("Announcement " + dto.getNameOfJourney() + " already exists");
         }
 
+        Place place = placeRepository.findById(dto.getPlaceId())
+                .orElseThrow(() -> new PlaceDoesNotExist("Place with ID + " + dto.getPlaceId() + "does not exist"));
+
+
+
         Announcement announcement = announcementMapper.toEntity(dto);
+        announcement.setPlace(place);
+        place.getAnnouncements().add(announcement);
         Announcement saved = announcementRepository.save(announcement);
 
 
@@ -176,10 +184,12 @@ public class AnnouncementService {
         }
 
         if(dto.getNameOfJourney() != null){
-            Announcement announcement1 = announcementRepository.findByNameOfJourney(dto.getNameOfJourney())
-                    .orElseThrow();
 
-            if(announcement1.getIsActive()){
+            boolean exists = announcementRepository.findByNameOfJourney(dto.getNameOfJourney())
+                    .map(Announcement::getIsActive)
+                    .isPresent();
+
+            if(exists){
                 throw new AnnouncementAlreadyExists("Announcement with this name already exist");
             }
 
