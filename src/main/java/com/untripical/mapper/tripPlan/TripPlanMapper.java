@@ -27,11 +27,9 @@ public class TripPlanMapper {
             stopsDto = entity.getTripStops()
                     .stream()
                     .map(stop -> new TripStopResponseDTO(
-                            stop.getName(),
                             stop.getDescription(),
-                            stop.getEstimateHour(),
                             stop.getOrderIndex(),
-                            stop.getDistanceToNext()))
+                            stop.getPlace().getId()))
                     .collect(Collectors.toList());
         }
 
