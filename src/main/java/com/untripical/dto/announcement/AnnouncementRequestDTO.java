@@ -39,7 +39,6 @@ public class AnnouncementRequestDTO {
     @Positive
     Integer maxParticipants;
 
-
-   // @NotNull(message = "placeId must not be null")
+    @NotNull(message = "placeId must not be null")
     Long placeId;
 }

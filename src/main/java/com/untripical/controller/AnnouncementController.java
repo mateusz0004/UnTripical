@@ -9,6 +9,7 @@ import com.untripical.model.Announcement;
 import com.untripical.service.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -70,6 +71,11 @@ public class AnnouncementController {
     @GetMapping("/location/{locationInfo}")
     public ResponseEntity<List<AnnouncementResponseDTO>> getAnnouncementsByLocationInfo(@PathVariable String locationInfo){
         return ResponseEntity.ok(announcementService.getAnnouncementsByLocationInfo(locationInfo));
+    }
+
+    @GetMapping("/placeId/{placeId}")
+    public ResponseEntity<List<AnnouncementResponseDTO>> getAnnouncementsByPlaceId (@PathVariable Long placeId){
+        return ResponseEntity.ok(announcementService.getAnnouncementsByPlaceId(placeId));
     }
 
 }

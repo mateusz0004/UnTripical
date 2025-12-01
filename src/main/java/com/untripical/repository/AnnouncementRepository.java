@@ -19,5 +19,6 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Long
     Optional<List<Announcement>> findAllByLocationInfo(String locationInfo);
     Optional<List<Announcement>> findAllByAnnouncementType(AnnouncementType announcementType);
     Optional<List<Announcement>> findAllByDate(LocalDate date);
+    Optional<List<Announcement>> findAllByPlaceId (Long id);
 
 }
