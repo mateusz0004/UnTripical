@@ -3,6 +3,7 @@ package com.untripical.service;
 import com.untripical.dto.place.PlaceRequestDTO;
 import com.untripical.dto.place.PlaceResponseDTO;
 import com.untripical.dto.place.PlaceUpdateDTO;
+import com.untripical.enums.PlaceType;
 import com.untripical.enums.RegionType;
 import com.untripical.enums.VerificationStatus;
 import com.untripical.exception.guideDetails.GuideDetailsDoesNotExist;
@@ -84,8 +85,6 @@ public class PlaceService {
         entity.setUser(actualUser);
         entity.setRegion(region);
         entity.setStatus(VerificationStatus.WAITING_FOR_APPROVAL);
-        entity.setAddressNumber(dto.getAddressNumber());
-        entity.setAddressStreet(dto.getAddressStreet());
         Place saved = placeRepository.save(entity);
 
         return placeMapper.toResponse(saved);
@@ -122,6 +121,12 @@ public class PlaceService {
         }
         if(dto.getAddressNumber()!=null){
             place.setAddressNumber(dto.getAddressNumber());
+        }
+        if(dto.getPostalCode()!=null){
+            place.setPostalCode(dto.getPostalCode());
+        }
+        if(dto.getPlaceType()!=null){
+            place.setPlaceType(PlaceType.valueOf(dto.getPlaceType()));
         }
 
         Place saved = placeRepository.save(place);

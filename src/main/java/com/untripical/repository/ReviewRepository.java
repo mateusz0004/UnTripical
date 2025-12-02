@@ -21,7 +21,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     int countByUser_Id(Long userId);
     int countByPlace_Id(Long placeId);
     int countByGuideDetails_Id(Long userId);
-    List<Review> findByDescriptionContaining(String keyword);
+    List<Review> findByPlaceIsNotNullAndDescriptionContaining(String keyword);
+    List<Review> findByGuideDetailsIsNotNullAndDescriptionContaining(String keyword);
     List<Review> findByPlaceIsNotNullAndNumberOfStars(Double numberOfStars);
     List<Review> findByGuideDetailsIsNotNullAndNumberOfStars(Double numberOfStars);
 }

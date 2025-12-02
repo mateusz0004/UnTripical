@@ -15,7 +15,7 @@ public class TripPlanResponseDTO {
     Date assignedAt;
     Boolean isActive;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    LocalDate date;
+    LocalDate dayWhenTripPlanIsStarting;
     List<TripStopResponseDTO> tripStops;
     Long userId;
     Long tripPlanId;

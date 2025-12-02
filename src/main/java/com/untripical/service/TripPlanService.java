@@ -81,8 +81,7 @@ public class TripPlanService {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        List<TripPlan> allTripPlans = tripPlanRepository.findByUser_Username(username)
-                .orElseThrow(() -> new TripPlanDoesNotExist("You don't have any plans"));
+        List<TripPlan> allTripPlans = tripPlanRepository.findByUser_Username(username);
 
         return allTripPlans.stream().filter(this::checkIsActive).map(tripPlanMapper::toResponse).collect(Collectors.toList());
     }
@@ -104,8 +103,7 @@ public class TripPlanService {
     public List<TripPlanResponseDTO> getTripPlanByDate (LocalDate date){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<TripPlan> tripPlansByDate = tripPlanRepository.findByDateAndUser_Username(date, username)
-                .orElseThrow(() -> new TripPlanDoesNotExist("Trip plan with this Date " + date + " does not exist"));
+        List<TripPlan> tripPlansByDate = tripPlanRepository.findByDayWhenTripPlanIsStartingAndUser_Username(date, username);
 
         return tripPlansByDate.stream().filter(this::checkIsActive).map(tripPlanMapper::toResponse).collect(Collectors.toList());
     }
@@ -128,10 +126,6 @@ public class TripPlanService {
             }
 
             tripPlan.setName(dto.getName());
-        }
-
-        if(dto.getDate() != null){
-            tripPlan.setDate(dto.getDate());
         }
 
         tripPlanRepository.save(tripPlan);

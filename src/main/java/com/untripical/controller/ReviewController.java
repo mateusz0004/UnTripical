@@ -7,6 +7,7 @@ import com.untripical.dto.review.place.ReviewRequestPlaceDTO;
 import com.untripical.dto.review.place.ReviewResponsePlaceDTO;
 import com.untripical.dto.review.place.UpdateRequestPlaceDTO;
 import com.untripical.service.ReviewService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class ReviewController {
     }
 
     @PutMapping("/guideDetails/{guideDetailsId}/{orderIndex}")
-    public ResponseEntity updateGuideDetailsReviewWithOrderIndex(@RequestBody UpdateRequestGuideDetailsDTO dto, @PathVariable Long orderIndex, @PathVariable Long guideDetailsId){
+    public ResponseEntity <ReviewResponseGuideDetailsDTO> updateGuideDetailsReviewWithOrderIndex(@RequestBody UpdateRequestGuideDetailsDTO dto, @PathVariable Long orderIndex, @PathVariable Long guideDetailsId){
         return ResponseEntity.ok(reviewService.updateGuideDetailsReview(dto, orderIndex, guideDetailsId));
     }
 
@@ -65,4 +66,37 @@ public class ReviewController {
     public ResponseEntity updatePlaceReviewWithOrderIndex(@RequestBody UpdateRequestPlaceDTO dto, @PathVariable Long orderIndex, @PathVariable Long placeId){
         return ResponseEntity.ok(reviewService.updatePlaceReview(dto, orderIndex, placeId));
     }
+
+    @GetMapping("/reviews/created-by-user")
+    public ResponseEntity <Integer> numbersOfReviewsCreatedByUser(){
+        return ResponseEntity.ok(reviewService.numbersOfReviewsCreatedByUser());
+    }
+
+    @GetMapping("/reviews/created-for-place/{placeId}")
+    public ResponseEntity<Integer> numberOfReviewsForOnePlace (@PathVariable Long placeId){
+        return ResponseEntity.ok(reviewService.numberOfReviewsForOnePlace(placeId));
+    }
+
+    @GetMapping("/reviews/created-for-guide/{guideDetailsId}")
+    public ResponseEntity<Integer> numberOfReviewsCreatedForOneGuideDetails (@PathVariable Long guideDetailsId){
+        return ResponseEntity.ok(reviewService.numberOfReviewsCreatedForOneGuideDetails(guideDetailsId));
+    }
+
+    @GetMapping("/place/containing/{keyword}")
+    public ResponseEntity<List<ReviewResponsePlaceDTO>> getPlaceReviewsContainingKeyword (@PathVariable String keyword){
+        return ResponseEntity.ok(reviewService.getPlaceReviewsContainingKeyword(keyword));
+    }
+
+    @GetMapping("/guideDetails/containing/{keyword}")
+    public ResponseEntity<List<ReviewResponseGuideDetailsDTO>> getGuideDetailsReviewsContainingKeyword (@PathVariable String keyword){
+        return ResponseEntity.ok(reviewService.getGuideDetailsReviewsContainingKeyword(keyword));
+    }
+
+    @GetMapping("/place/containing/{numberOfStars}")
+    public ResponseEntity<List<ReviewResponsePlaceDTO>> getReviewsForPlaceByNumberOfStars (@PathVariable Double numberOfStars){
+        return ResponseEntity.ok(reviewService.getReviewsForPlaceByNumberOfStars(numberOfStars));
+    }
+
+    //@GetMapping("/place/with/number-of-stars/{numberOfStars}")
+    //public ResponseEntity<List<ReviewResponsePlaceDTO>>
 }

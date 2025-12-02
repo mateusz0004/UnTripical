@@ -40,7 +40,7 @@ public class TripPlanMapper {
                 entity.getName(),
                 entity.getAssignedAt(),
                 entity.getIsActive(),
-                entity.getDate(),
+                entity.getDayWhenTripPlanIsStarting(),
                 stopsDto,
                 entity.getUser().getId(),
                 entity.getId()
@@ -56,7 +56,7 @@ public class TripPlanMapper {
                 .assignedAt(new Date())
                 .isActive(true)
                 .user(user)
-                .date(dto.getDate())
+                .dayWhenTripPlanIsStarting(dto.getDayWhenTripPlanIsStarting())
                 .tripStops(new ArrayList<>())
                 .build();
     }

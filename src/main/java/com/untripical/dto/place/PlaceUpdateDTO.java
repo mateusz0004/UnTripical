@@ -8,6 +8,8 @@ public class PlaceUpdateDTO {
     private String city;
     private String addressStreet;
     private String addressNumber;
+    private String postalCode;
+    private String placeType;
     private String photoUrl;
     private Long regionId;
 }

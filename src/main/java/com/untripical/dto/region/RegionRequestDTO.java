@@ -3,9 +3,14 @@ package com.untripical.dto.region;
 import com.untripical.enums.RegionType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RegionRequestDTO {
 
     @NotNull(message = "type must not be null")

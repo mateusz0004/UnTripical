@@ -172,16 +172,32 @@ public class ReviewService {
         return reviewRepository.countByGuideDetails_Id(guideDetailsId);
     }
 
-    public List<Review> getReviewsContainingKeyword (String keyword){
-        return reviewRepository.findByDescriptionContaining(keyword);
+    public List<ReviewResponsePlaceDTO> getPlaceReviewsContainingKeyword (String keyword){
+        List<Review> reviews  = reviewRepository.findByPlaceIsNotNullAndDescriptionContaining(keyword);
+        return reviews.stream()
+                .map(reviewMapper::toPlaceResponse)
+                .collect(Collectors.toList());
     }
 
-    public List<Review> getReviewsForPlaceByNumberOfStars(Double numberOfStars){
-        return reviewRepository.findByPlaceIsNotNullAndNumberOfStars(numberOfStars);
+    public List<ReviewResponseGuideDetailsDTO> getGuideDetailsReviewsContainingKeyword (String keyword){
+        List<Review> reviews  = reviewRepository.findByGuideDetailsIsNotNullAndDescriptionContaining(keyword);
+        return reviews.stream()
+                .map(reviewMapper::toGuideDetailsResponse)
+                .collect(Collectors.toList());
     }
 
-    public List<Review> getReviewsForGuideDetailsByNumberOfStars(Double numberOfStars){
-        return reviewRepository.findByGuideDetailsIsNotNullAndNumberOfStars(numberOfStars);
+    public List<ReviewResponsePlaceDTO> getReviewsForPlaceByNumberOfStars(Double numberOfStars){
+        return reviewRepository.findByPlaceIsNotNullAndNumberOfStars(numberOfStars)
+                .stream()
+                .map(reviewMapper::toPlaceResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<ReviewResponseGuideDetailsDTO> getReviewsForGuideDetailsByNumberOfStars(Double numberOfStars){
+        return reviewRepository.findByGuideDetailsIsNotNullAndNumberOfStars(numberOfStars)
+                .stream()
+                .map(reviewMapper::toGuideDetailsResponse)
+                .collect(Collectors.toList());
     }
 
 

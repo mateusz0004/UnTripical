@@ -4,6 +4,7 @@ import com.untripical.dto.tripPlan.TripPlanRequestDTO;
 import com.untripical.dto.tripPlan.TripPlanResponseDTO;
 import com.untripical.model.TripPlan;
 import com.untripical.service.TripPlanService;
+import jakarta.persistence.PrePersist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -43,10 +44,10 @@ public class TripPlanController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/date")
-    public ResponseEntity<List<TripPlanResponseDTO>> getTripPlanByDate(@RequestBody TripPlanRequestDTO dto){
-        return ResponseEntity.ok(tripPlanService.getTripPlanByDate(dto.getDate()));
-    }
+    //@GetMapping("/date")
+    //public ResponseEntity<List<TripPlanResponseDTO>> getTripPlanByDate(@RequestBody TripPlanRequestDTO dto){
+    //    return ResponseEntity.ok(tripPlanService.getTripPlanByDate(dto.getDate()));
+    // }
 
     @PutMapping("/update/{name}")
     public ResponseEntity<TripPlanResponseDTO> updateTripPlan(@RequestBody TripPlanRequestDTO dto, @PathVariable String name){

@@ -14,8 +14,11 @@ public class PlaceResponseDTO {
     String city;
     String addressStreet;
     String addressNumber;
-    VerificationStatus verificationStatus;
+    String placeType;
+    String postalCode;
+    Boolean isActive;
     String photoUrl;
+    VerificationStatus verificationStatus;
     Long regionId;
     Long userId;
     List<AnnouncementResponseDTO> announcements;
