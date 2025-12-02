@@ -40,6 +40,10 @@ public class Place {
     @Column (name = "place_type")
     private PlaceType placeType;
 
+    @NotNull(message = "postalCode must not be null")
+    @Column (name = "postal_code")
+    private String postalCode;
+
     @Column(name = "is_active")
     @NotNull(message = "isActive must not be null")
     private Boolean isActive;

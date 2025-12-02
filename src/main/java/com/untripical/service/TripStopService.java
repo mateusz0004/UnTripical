@@ -70,8 +70,10 @@ public class TripStopService {
             try {
                 TripStop origin = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-1);
                 TripStop destination = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan);
-                String tempOriginAddress = origin.getPlace().getAddressStreet() + " " + origin.getPlace().getAddressNumber() + ", " + origin.getPlace().getCity();
-                String tempDestinationAddress = destination.getPlace().getAddressStreet() + " " + destination.getPlace().getAddressNumber() + ", " + destination.getPlace().getCity();
+                String tempOriginAddress = origin.getPlace().getAddressStreet() + " " + origin.getPlace().getAddressNumber() + ", "
+                        + origin.getPlace().getPostalCode() + " " + origin.getPlace().getCity();
+                String tempDestinationAddress = destination.getPlace().getAddressStreet() + " " + destination.getPlace().getAddressNumber()
+                        + ", " + destination.getPlace().getPostalCode() + " "  + destination.getPlace().getCity();
                 double distance = distanceService.getDistanceInKm(tempOriginAddress, tempDestinationAddress);
                 origin.setDistanceToNext(distance);
                 destination.setDistanceToNext(0.0);
@@ -129,10 +131,12 @@ public class TripStopService {
 
             String originAddress = origin.getPlace().getAddressStreet() + " " +
                     origin.getPlace().getAddressNumber() + ", " +
+                    destination.getPlace().getPostalCode() + " " +
                     origin.getPlace().getCity();
 
             String destinationAddress = destination.getPlace().getAddressStreet() + " " +
                     destination.getPlace().getAddressNumber() + ", " +
+                    destination.getPlace().getPostalCode() + " " +
                     destination.getPlace().getCity();
 
             double distance = distanceService.getDistanceInKm(originAddress, destinationAddress);

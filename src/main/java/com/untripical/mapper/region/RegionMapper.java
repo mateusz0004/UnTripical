@@ -4,6 +4,7 @@ import com.untripical.dto.region.RegionRequestDTO;
 import com.untripical.dto.region.RegionResponseDTO;
 import com.untripical.model.Region;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 
 @Mapper(componentModel = "spring")

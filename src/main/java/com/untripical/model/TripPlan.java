@@ -46,7 +46,7 @@ public class TripPlan {
     @NotNull(message = "date must not be null")
     @Column (name = "date")
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date;
+    private LocalDate dayWhenTripPlanIsStarting;
 
     @Column(name = "totalDistance")
     private Double totalDistance;

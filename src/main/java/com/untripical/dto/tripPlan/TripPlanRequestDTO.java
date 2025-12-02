@@ -15,6 +15,6 @@ public class TripPlanRequestDTO {
 
     @NotBlank(message = "date must not be null")
     @JsonFormat(pattern = "dd-MM-yyyy")
-    LocalDate date;
+    LocalDate dayWhenTripPlanIsStarting;
 
 }
