@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface TripPlanRepository extends JpaRepository<TripPlan, Long> {
     Optional<List<TripPlan>> findByUser_Username(String username);
     Optional<TripPlan> findByNameAndUser_Username(String planName, String username);
-    Optional<TripPlan> findByIdAndUser_Username(Long planId, String username);
+    Optional<TripPlan> findByIdAndUser_Id(Long planId, Long userId);
     Optional<TripPlan> findByName(String name);
     Optional<TripPlan> findByNameAndIsActiveTrueAndUser_Username(String name, String username);
     Optional<List<TripPlan>> findByDateAndUser_Username(LocalDate date, String username);

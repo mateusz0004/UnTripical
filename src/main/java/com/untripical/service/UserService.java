@@ -137,15 +137,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserResponseDTO setAdmins() {
-        User admin = getCurrentUser();
-        if (admin.getUsername().equals("Arek") || admin.getUsername().equals("Mateusz")) {
-            admin.setUserRole(UserRole.ADMIN);
-        }
-        User saved = userRepository.save(admin);
-        return userMapper.toResponse(saved);
-    }
-
     public boolean isActive(User user) {
         if (!user.getIsActive()) {
             throw new UserDoesNotExist("This user does not exist");

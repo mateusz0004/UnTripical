@@ -11,7 +11,6 @@ import java.util.List;
 
 @Value
 public class AnnouncementResponseDTO {
-
     Long id;
     Date createdAt;
     String nameOfJourney;
@@ -24,5 +23,4 @@ public class AnnouncementResponseDTO {
     Integer maxParticipants;
     Long placeId;
     List<GuideAnnouncementTableResponseDTO> guideAnnouncementTables;
-
 }

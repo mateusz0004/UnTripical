@@ -2,6 +2,7 @@ package com.untripical.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.untripical.enums.PlaceType;
 import com.untripical.enums.VerificationStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +36,9 @@ public class Place {
     @Column(name = "address_number")
     private String addressNumber;
 
+    @NotNull(message = "placeType must not be null")
+    @Column (name = "place_type")
+    private PlaceType placeType;
 
     @Column(name = "is_active")
     @NotNull(message = "isActive must not be null")

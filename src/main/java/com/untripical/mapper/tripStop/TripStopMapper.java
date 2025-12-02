@@ -13,7 +13,6 @@ public interface TripStopMapper {
     TripStop toEntity(TripStopRequestDTO dto);
 
 
-    // @Mapping(source = "place.id", target = "placeId")
-    //@Mapping(source = "tripPlan.id", target = "tripPlanId")
+    @Mapping(source = "place.id", target = "placeId")
     TripStopResponseDTO toResponse(TripStop entity);
 }

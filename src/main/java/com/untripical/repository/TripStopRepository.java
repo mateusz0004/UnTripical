@@ -6,13 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TripStopRepository extends JpaRepository<TripStop, Long> {
-    List<TripStop> findByTripPlanId(Long tripPlanId);
-    @Query("SELECT COALESCE(MAX(ts.orderIndex), 0) FROM TripStop ts WHERE ts.tripPlan.id = :tripPlanId")
-    int findMaxOrderIndexByTripPlanId(Long tripPlanId);
-    TripStop findByName(String name);
-    boolean existsByNameAndTripPlan_Id(String name, Long tripPlanId);
-
+    List<TripStop> findByTripPlan_Id(Long tripPlanId);
+    Optional<TripStop> findByOrderIndexAndTripPlan_User_IdAndTripPlan_Id(Long orderIndex, Long userId, Long tripPlanId);
+    List<TripStop> findAllByTripPlan_IdAndTripPlan_User_Id(Long tripPlanId, Long userId);
 }

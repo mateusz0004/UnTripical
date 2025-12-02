@@ -2,8 +2,10 @@ package com.untripical.service;
 
 import com.untripical.dto.tripStop.TripStopRequestDTO;
 import com.untripical.dto.tripStop.TripStopResponseDTO;
+import com.untripical.dto.tripStop.TripStopUpdateRequestDTO;
 import com.untripical.exception.place.PlaceDoesNotExist;
 import com.untripical.exception.tripPlan.TripPlanDoesNotExist;
+import com.untripical.exception.tripStop.TripStopDoesNotExist;
 import com.untripical.mapper.tripStop.TripStopMapper;
 import com.untripical.model.Place;
 import com.untripical.model.TripPlan;
@@ -13,15 +15,15 @@ import com.untripical.repository.TripPlanRepository;
 import com.untripical.repository.TripStopRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 @Transactional
-
-//TODO: pola przystanków w tripPLanie mają null, dodaj obsługę Place, zabezpiecz, żeby nie można było dodawać tripStopa
-//TODO: do planu, który nie istnieje, problem z EstimateHour, odkomentuj pola związane z Place
 public class TripStopService {
 
     @Autowired
@@ -39,13 +41,15 @@ public class TripStopService {
     @Autowired
     private DistanceService distanceService;
 
+    @Autowired
+    UserService userService;
 
 
     public TripStopResponseDTO addTripStop(TripStopRequestDTO dto) {
+        Long actualUserId = userService.getCurrentUser().getId();
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        TripPlan tripPlan = tripPlanRepository.findByIdAndUser_Username(dto.getTripPlanId(), username)
+        TripPlan tripPlan = tripPlanRepository.findByIdAndUser_Id(dto.getTripPlanId(), actualUserId)
                 .orElseThrow(() -> new TripPlanDoesNotExist("Trip plan with ID " + dto.getTripPlanId() + " does not exist"));
 
         Place place = placeRepository.findById(dto.getPlaceId())
@@ -81,5 +85,78 @@ public class TripStopService {
         TripStop saved = tripStopRepository.save(newTripStop);
         return tripStopMapper.toResponse(saved);
     }
-    /// posprawdzać czy nie powinienem najpierw tego poustawiać i czy nie pobieram z bazy czegos a ona jest pusta
+
+
+    public void deleteTripStop(Long orderIndex, Long tripPlanId) throws Exception {
+        Long userId = userService.getCurrentUser().getId();
+
+        TripStop toDelete = tripStopRepository
+                .findByOrderIndexAndTripPlan_User_IdAndTripPlan_Id(orderIndex, userId, tripPlanId)
+                .orElseThrow(() -> new TripStopDoesNotExist("This trip stop does not exist for this user"));
+
+        TripPlan tripPlan = tripPlanRepository.findByIdAndUser_Id(tripPlanId, userId)
+                .orElseThrow(() -> new TripPlanDoesNotExist("This trip plan does not exist"));
+
+        int stopsBeforeDelete = tripPlan.getTripStops().size();
+        tripPlan.getTripStops().remove(toDelete);
+        tripStopRepository.delete(toDelete);
+
+        List<TripStop> stops = tripStopRepository
+                .findAllByTripPlan_IdAndTripPlan_User_Id(tripPlanId, userId)
+                .stream()
+                .sorted(Comparator.comparingInt(TripStop::getOrderIndex))
+                .collect(Collectors.toList());
+
+        stops.forEach(ts -> System.out.println(ts.getOrderIndex() + " | " + ts.getTripPlan().getUser().getId()));
+
+        int newIndex = 1;
+        for (TripStop ts : stops) {
+            ts.setOrderIndex(newIndex++);
+        }
+
+        int deletedIndex = orderIndex.intValue();
+
+        if (deletedIndex > 1 && deletedIndex < stopsBeforeDelete) {
+            TripStop origin = stops.get(deletedIndex - 2);
+            TripStop destination = stops.get(deletedIndex - 1);
+
+            String originAddress = origin.getPlace().getAddressStreet() + " " +
+                    origin.getPlace().getAddressNumber() + ", " +
+                    origin.getPlace().getCity();
+
+            String destinationAddress = destination.getPlace().getAddressStreet() + " " +
+                    destination.getPlace().getAddressNumber() + ", " +
+                    destination.getPlace().getCity();
+
+            double distance = distanceService.getDistanceInKm(originAddress, destinationAddress);
+            origin.setDistanceToNext(distance);
+        }
+
+        tripStopRepository.saveAll(stops);
+    }
+
+
+    public TripStopResponseDTO updateTripStop(TripStopUpdateRequestDTO dto, Long orderIndex, Long tripPlanId){
+        Long actualUserId = userService.getCurrentUser().getId();
+        TripStop tripStop = tripStopRepository.findByOrderIndexAndTripPlan_User_IdAndTripPlan_Id(orderIndex, actualUserId, tripPlanId)
+                .orElseThrow(()-> new TripStopDoesNotExist("This trip stop does not exist"));
+
+        if(dto.getDescription()!=null){
+            tripStop.setDescription(dto.getDescription());
+        }
+        TripStop saved = tripStopRepository.save(tripStop);
+        return tripStopMapper.toResponse(saved);
+    }
+
+    public List<TripStop> findAllTripStopsWithPlanIdEntity(Long tripPlanId, Long userId){
+        return tripStopRepository.findAllByTripPlan_IdAndTripPlan_User_Id(tripPlanId, userId);
+    }
+
+    public List<TripStopResponseDTO> findAllTripStopsWithPlanId(Long tripPlanId){
+        Long userId = userService.getCurrentUser().getId();
+        return findAllTripStopsWithPlanIdEntity(tripPlanId, userId)
+                .stream()
+                .map(tripStopMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 }

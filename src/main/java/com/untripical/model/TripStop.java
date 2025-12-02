@@ -34,7 +34,7 @@ public class TripStop {
 
     @Column(name = "distance_to_next")
     private Double distanceToNext;
-    /// dddac is_active
+
     @ManyToOne
     @JsonBackReference
     @JoinColumn (name = "trip_plan_id")
