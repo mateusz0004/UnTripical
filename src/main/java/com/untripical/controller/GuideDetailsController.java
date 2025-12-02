@@ -36,6 +36,11 @@ public class GuideDetailsController {
         return ResponseEntity.ok(guideDetailsService.getGuideDetailsBySpecialisation(specialisation));
     }
 
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<GuideDetailsResponseDTO>> getGuideDetailsByClosestBigCity (@PathVariable String city){
+        return ResponseEntity.ok(guideDetailsService.getGuideDetailsByClosestBigCity(city));
+    }
+
     @PostMapping("/register")
     public ResponseEntity<GuideDetailsResponseDTO> registerGuideDetails(@RequestBody GuideDetailsOrUserRequest dto){
         return ResponseEntity.ok(guideDetailsService.guideRegister(dto));

@@ -8,6 +8,7 @@ import com.untripical.exception.tripPlan.TripPlanDoesNotExist;
 import com.untripical.exception.user.UserDoesNotExist;
 import com.untripical.mapper.tripPlan.TripPlanMapper;
 import com.untripical.model.TripPlan;
+import com.untripical.model.TripStop;
 import com.untripical.model.User;
 import com.untripical.repository.TripPlanRepository;
 import com.untripical.repository.UserRepository;
@@ -55,7 +56,6 @@ public class TripPlanService {
 
         TripPlan plan = tripPlanMapper.toEntity(dto, currentUser);
         plan.setUser(currentUser);
-
         TripPlan saved = tripPlanRepository.save(plan);
 
         return tripPlanMapper.toResponse(saved);
@@ -145,4 +145,5 @@ public class TripPlanService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserDoesNotExist("User " + username + " does not exist"));
     }
+
 }

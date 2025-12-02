@@ -48,6 +48,9 @@ public class TripPlan {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
 
+    @Column(name = "totalDistance")
+    private Double totalDistance;
+
     @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
    // @JsonManagedReference
     private List<TripStop> tripStops;

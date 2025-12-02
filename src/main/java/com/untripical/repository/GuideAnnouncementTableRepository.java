@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface GuideAnnouncementTableRepository extends JpaRepository<GuideAnnouncementTable, Long> {
     Optional<GuideAnnouncementTable> findByAnnouncement_Id(Long announcementId);
+    Integer countByGuideDetails_Id(Long guideId);
 }

@@ -19,4 +19,5 @@ public class TripPlanResponseDTO {
     List<TripStopResponseDTO> tripStops;
     Long userId;
     Long tripPlanId;
+    Double totalDistance;
 }

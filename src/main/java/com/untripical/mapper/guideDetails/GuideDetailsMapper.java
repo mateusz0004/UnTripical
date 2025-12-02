@@ -16,6 +16,7 @@ public interface GuideDetailsMapper {
 
     @Mapping(source = "region.id", target = "regionId")
     @Mapping(source = "user.username", target = "username")
+    @Mapping(source = "numberOfAnnouncements", target = "numberOfAnnouncements")
     GuideDetailsResponseDTO toResponse(GuideDetails entity);
 
     @Mapping(source = "regionId", target = "region.id")

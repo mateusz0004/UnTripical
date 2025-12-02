@@ -6,6 +6,7 @@ import com.untripical.dto.announcement.AnnouncementUpdateDTO;
 import com.untripical.enums.AnnouncementType;
 import com.untripical.exception.announcement.AnnouncementDoesNotExist;
 import com.untripical.exception.announcement.ListOfAnnouncementDoesNotExist;
+import com.untripical.exception.guideDetails.GuideDetailsDoesNotExist;
 import com.untripical.exception.place.PlaceDoesNotExist;
 import com.untripical.exception.user.UserDoesNotExist;
 import com.untripical.mapper.announcement.AnnouncementMapper;
@@ -84,6 +85,8 @@ public class AnnouncementService {
         guideAnnouncementTable.setGuideDetails(guideDetails);
 
         guideAnnouncementTableRepository.save(guideAnnouncementTable);
+        guideDetails.setNumberOfAnnouncements(countGuideAnnouncements(guideDetails.getId()));
+        guideDetailsRepository.save(guideDetails);
 
         return announcementMapper.toResponse(saved);
     }
@@ -115,6 +118,11 @@ public class AnnouncementService {
             if (!announcementInTable.getGuideDetails().getId().equals(user.getId())) {
                 throw new UnauthorizedAccess("You are not the owner of this announcement");
             }
+
+            guideAnnouncementTableRepository.delete(announcementInTable);
+            GuideDetails guide = guideDetailsRepository.findById(user.getId()).orElseThrow(() -> new GuideDetailsDoesNotExist("This guide does not exist"));
+            guide.setNumberOfAnnouncements(countGuideAnnouncements(guide.getId()));
+            guideDetailsRepository.save(guide);
 
             announcement.setIsActive(false);
         }
@@ -163,7 +171,7 @@ public class AnnouncementService {
                 .collect(Collectors.toList());
     }
 
-    public AnnouncementResponseDTO updateDescription(AnnouncementUpdateDTO dto, String nameOfJourney){
+    public AnnouncementResponseDTO updateAnnouncement(AnnouncementUpdateDTO dto, String nameOfJourney){
 
         User user = validation();
 
@@ -250,6 +258,10 @@ public class AnnouncementService {
                 .filter(Announcement::getIsActive)
                 .map(announcementMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    public Integer countGuideAnnouncements (Long guideId){
+        return guideAnnouncementTableRepository.countByGuideDetails_Id(guideId);
     }
 
 }

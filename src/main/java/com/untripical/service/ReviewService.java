@@ -19,6 +19,7 @@ import com.untripical.repository.PlaceRepository;
 import com.untripical.repository.ReviewRepository;
 import com.untripical.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,6 +93,21 @@ public class ReviewService {
         entity.setOrderIndex(nextIndex);
         guideDetailsWhereWeAddOpinion.getReviews().add(entity);
         reviewRepository.save(entity);
+
+        List<Review> reviews = guideDetailsWhereWeAddOpinion.getReviews(); // lista opinii dla danego guide'a
+
+        if (reviews.isEmpty()) {
+            guideDetailsWhereWeAddOpinion.setAvgRating(0.0);
+        } else {
+            double avg = reviews.stream()
+                    .mapToDouble(Review::getNumberOfStars)
+                    .average()
+                    .orElse(0.0);
+            guideDetailsWhereWeAddOpinion.setAvgRating(avg);
+        }
+
+        guideDetailsRepository.save(guideDetailsWhereWeAddOpinion);
+
         return reviewMapper.toGuideDetailsResponse(entity);
     }
 
@@ -126,6 +142,19 @@ public class ReviewService {
             review.setNumberOfStars(dto.getNumberOfStars());
         }
         reviewRepository.save(review);
+
+        GuideDetails guide = guideDetailsRepository.findById(guideDetailsId)
+                .orElseThrow(() -> new GuideDetailsDoesNotExist("This guide does not exist"));
+
+        double avg = guide.getReviews().stream()
+                .filter(Review::getIsActive)
+                .mapToDouble(Review::getNumberOfStars)
+                .average()
+                .orElse(0.0);
+
+        guide.setAvgRating(avg);
+        guideDetailsRepository.save(guide);
+
         return reviewMapper.toGuideDetailsResponse(review);
     }
 
@@ -145,7 +174,30 @@ public class ReviewService {
             throw new ReviewDoesNotExist("This review does not exist");
         }
         review.setIsActive(false);
+
         reviewRepository.save(review);
+
+        GuideDetails guide = guideDetailsRepository.findById(guideDetailsId)
+                .orElseThrow(() -> new GuideDetailsDoesNotExist("This guide does not exist"));
+
+
+        List<Review> activeReviews = guide.getReviews()
+                .stream()
+                .filter(Review::getIsActive)
+                .toList();
+
+        if (activeReviews.isEmpty()) {
+            guide.setAvgRating(0.0);
+        } else {
+            double avg = activeReviews.stream()
+                    .mapToDouble(Review::getNumberOfStars)
+                    .average()
+                    .orElse(0.0);
+            guide.setAvgRating(avg);
+        }
+
+        guideDetailsRepository.save(guide);
+
     }
 
     public void deletePlaceReviewById(Long orderIndex, Long placeId){

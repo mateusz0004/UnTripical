@@ -34,6 +34,10 @@ public class GuideDetails {
     @Column(name = "counter_of_did_journey")
     @Min(0)
     private int counterOfDidJourney;
+    @Column(name = "averageRating")
+    private Double avgRating;
+    @Column
+    private Integer numberOfAnnouncements;
     @JsonManagedReference
     @OneToMany(mappedBy = "guideDetails", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GuideAnnouncementTable> guideAnnouncements;

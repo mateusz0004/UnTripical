@@ -3,15 +3,18 @@ package com.untripical.service;
 import com.untripical.dto.guideDetails.GuideDetailsResponseDTO;
 import com.untripical.dto.guideDetails.GuideDetailsUpdateResponseWithTokenDTO;
 import com.untripical.dto.guideDetailsOrUser.GuideDetailsOrUserUpdateDTO;
+import com.untripical.dto.review.guide.ReviewResponseGuideDetailsDTO;
 import com.untripical.dto.userDto.GuideDetailsOrUserRequest;
 import com.untripical.enums.Specialisation;
 import com.untripical.enums.UserRole;
 import com.untripical.exception.guideDetails.GuideDetailsDoesNotExist;
+import com.untripical.exception.guideDetails.ListOfGuideDetailsDoesNotExist;
 import com.untripical.exception.user.UserWithThisUsernameAlreadyExist;
 import com.untripical.mapper.guideDetails.GuideDetailsMapper;
 import com.untripical.mapper.user.UserMapper;
 import com.untripical.model.GuideDetails;
 import com.untripical.model.Region;
+import com.untripical.model.Review;
 import com.untripical.model.User;
 import com.untripical.repository.GuideDetailsRepository;
 import com.untripical.repository.UserRepository;
@@ -44,6 +47,8 @@ public class GuideDetailsService {
     private UserService userService;
     @Autowired
     private JWTService jwt;
+    @Autowired
+    private ReviewService reviewService;
 
     public GuideDetailsResponseDTO getGuideDetailsById(Long id){
         GuideDetails guideDetails = guideDetailsRepository.findById(id)
@@ -144,5 +149,28 @@ public class GuideDetailsService {
         GuideDetails guideDetails = guideDetailsRepository.findById(id)
                 .orElseThrow(()->new GuideDetailsDoesNotExist("This guide does not exist"));
         userService.deleteUserByAdmin(id);
+    }
+
+    public List<GuideDetailsResponseDTO> getGuideDetailsByClosestBigCity (String closestBigCity){
+
+        List<GuideDetails> guideDetailsList =  guideDetailsRepository.findAllByClosestBigCity(closestBigCity)
+                .orElseThrow(() -> new ListOfGuideDetailsDoesNotExist("There is no guides in this city"));
+
+
+        return guideDetailsList.stream()
+                .map(guideDetailsMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public Double averageGuideReview(Long guideId){
+        List<ReviewResponseGuideDetailsDTO> listOfReviewsForGuide = reviewService.getAllGuideDetailsReviews(guideId);
+
+        if(listOfReviewsForGuide.isEmpty()){
+            return 0.0;
+        }
+
+        double sum = listOfReviewsForGuide.stream().mapToDouble(ReviewResponseGuideDetailsDTO::getNumberOfStars).sum();
+
+        return sum / listOfReviewsForGuide.size();
     }
 }

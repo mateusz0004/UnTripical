@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface GuideDetailsRepository extends JpaRepository<GuideDetails, Long> {
     Optional<GuideDetails>  findById(Long id);
     Optional<List<GuideDetails>> findAllBySpecialisation(Specialisation specialisation);
+    Optional<List<GuideDetails>> findAllByClosestBigCity(String closestBigCity);
 }

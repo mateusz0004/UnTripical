@@ -45,6 +45,7 @@ public class TripStopService {
     UserService userService;
 
 
+
     public TripStopResponseDTO addTripStop(TripStopRequestDTO dto) {
         Long actualUserId = userService.getCurrentUser().getId();
 
@@ -82,7 +83,15 @@ public class TripStopService {
             newTripStop.setDistanceToNext(0.0);
         }
 
+
         TripStop saved = tripStopRepository.save(newTripStop);
+        double totalDistance = tripPlan.getTripStops()
+                .stream()
+                .mapToDouble(TripStop::getDistanceToNext)
+                .sum();
+
+        tripPlan.setTotalDistance(totalDistance);
+        tripPlanRepository.save(tripPlan);
         return tripStopMapper.toResponse(saved);
     }
 
@@ -131,6 +140,14 @@ public class TripStopService {
         }
 
         tripStopRepository.saveAll(stops);
+        double totalDistance = tripPlan.getTripStops()
+                .stream()
+                .mapToDouble(TripStop::getDistanceToNext)
+                .sum();
+
+        tripPlan.setTotalDistance(totalDistance);
+        tripPlanRepository.save(tripPlan);
+        tripPlanRepository.save(tripPlan);
     }
 
 
@@ -143,6 +160,7 @@ public class TripStopService {
             tripStop.setDescription(dto.getDescription());
         }
         TripStop saved = tripStopRepository.save(tripStop);
+
         return tripStopMapper.toResponse(saved);
     }
 

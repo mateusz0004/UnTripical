@@ -35,7 +35,7 @@ public class AnnouncementController {
 
     @PutMapping("/update/{name}")
     public ResponseEntity<AnnouncementResponseDTO> updateDescription (@PathVariable String name, @RequestBody AnnouncementUpdateDTO dto){
-        return ResponseEntity.ok(announcementService.updateDescription(dto, name));
+        return ResponseEntity.ok(announcementService.updateAnnouncement(dto, name));
     }
 
     @GetMapping("/all")

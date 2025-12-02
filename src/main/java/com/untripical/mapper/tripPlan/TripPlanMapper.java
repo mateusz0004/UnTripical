@@ -40,10 +40,10 @@ public class TripPlanMapper {
                 entity.getName(),
                 entity.getAssignedAt(),
                 entity.getIsActive(),
-                entity.getDate(),
-                stopsDto,
+                entity.getDate(),stopsDto,
+                entity.getId(),
                 entity.getUser().getId(),
-                entity.getId()
+                entity.getTotalDistance()
         );
 
 

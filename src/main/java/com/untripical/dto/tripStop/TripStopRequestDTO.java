@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 @Value
 public class TripStopRequestDTO {
 
-    @NotBlank(message = "name must not be blank")
-    String name;
-
     @NotBlank(message = "description must not be blank")
     String description;
 

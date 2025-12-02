@@ -17,6 +17,8 @@ public class GuideDetailsResponseDTO {
     Specialisation specialisation;
     ExperienceLevel experienceLevel;
     int counterOfDidJourney;
+    Double avgRating;
+    Integer numberOfAnnouncements;
     Long regionId;
     List<GuideAnnouncementTableResponseDTO> guideAnnouncements;
     List<ReviewResponsePlaceDTO> reviews;
