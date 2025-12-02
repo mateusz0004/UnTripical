@@ -107,8 +107,6 @@ public class TripStopService {
                 .sorted(Comparator.comparingInt(TripStop::getOrderIndex))
                 .collect(Collectors.toList());
 
-        stops.forEach(ts -> System.out.println(ts.getOrderIndex() + " | " + ts.getTripPlan().getUser().getId()));
-
         int newIndex = 1;
         for (TripStop ts : stops) {
             ts.setOrderIndex(newIndex++);

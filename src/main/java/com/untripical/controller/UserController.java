@@ -38,11 +38,6 @@ public class UserController {
         return userService.updateUser(dto);
     }
 
-    @PutMapping("/admin")
-    public UserResponseDTO setAdmins() {
-        return userService.setAdmins();
-    }
-
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteUserOrGuideByAdmin(@PathVariable Long id) {
