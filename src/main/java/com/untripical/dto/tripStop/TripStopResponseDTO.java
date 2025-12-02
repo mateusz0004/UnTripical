@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TripStopResponseDTO {
+    Long id;
     String description;
     int orderIndex;
+    Double distanceToNext;
     Long placeId;
 }

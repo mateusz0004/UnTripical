@@ -6,6 +6,7 @@ import com.untripical.dto.announcement.AnnouncementUpdateDTO;
 import com.untripical.enums.AnnouncementType;
 import com.untripical.exception.announcement.AnnouncementDoesNotExist;
 import com.untripical.exception.announcement.ListOfAnnouncementDoesNotExist;
+import com.untripical.exception.place.PlaceDoesNotExist;
 import com.untripical.exception.user.UserDoesNotExist;
 import com.untripical.mapper.announcement.AnnouncementMapper;
 import com.untripical.mapper.guideAnnouncementTable.GuideAnnouncementMapper;
@@ -66,7 +67,12 @@ public class AnnouncementService {
             throw new AnnouncementAlreadyExists("Announcement " + dto.getNameOfJourney() + " already exists");
         }
 
+        Place place = placeRepository.findById(dto.getPlaceId())
+                .orElseThrow(()-> new PlaceDoesNotExist("Place with ID " + dto.getPlaceId() + " does not exist"));
+
         Announcement announcement = announcementMapper.toEntity(dto);
+        announcement.setPlace(place);
+        place.getAnnouncements().add(announcement);
         Announcement saved = announcementRepository.save(announcement);
 
 
@@ -230,6 +236,17 @@ public class AnnouncementService {
         List<Announcement> announcements = announcementRepository.findAllByDate(date)
                 .orElseThrow(() -> new ListOfAnnouncementDoesNotExist("These announcements do not exist"));
         return   announcements.stream()
+                .filter(Announcement::getIsActive)
+                .map(announcementMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<AnnouncementResponseDTO> getAnnouncementsByPlaceId (Long placeId){
+
+        List<Announcement> announcements = announcementRepository.findAllByPlaceId(placeId)
+                .orElseThrow(() -> new ListOfAnnouncementDoesNotExist("List of announcements for this place does not exist"));
+
+        return announcements.stream()
                 .filter(Announcement::getIsActive)
                 .map(announcementMapper::toResponse)
                 .collect(Collectors.toList());

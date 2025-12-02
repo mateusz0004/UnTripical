@@ -10,9 +10,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {GuideAnnouncementMapper.class})
 public interface AnnouncementMapper {
 
-    //@Mapping(source = "placeId", target = "place.id")
+    @Mapping(source = "placeId", target = "place.id")
     Announcement toEntity(AnnouncementRequestDTO dto);
 
-   // @Mapping(source = "place.id", target = "placeId")
+    @Mapping(source = "place.id", target = "placeId")
     AnnouncementResponseDTO toResponse(Announcement entity);
 }
