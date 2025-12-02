@@ -44,7 +44,7 @@ public class TripPlan {
     private Boolean isActive;
 
     @NotNull(message = "date must not be null")
-    @Column (name = "date")
+    @Column (name = "day_when_trip_is_starting")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dayWhenTripPlanIsStarting;
 
