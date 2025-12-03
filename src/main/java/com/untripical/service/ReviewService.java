@@ -94,17 +94,13 @@ public class ReviewService {
         guideDetailsWhereWeAddOpinion.getReviews().add(entity);
         reviewRepository.save(entity);
 
-        List<Review> reviews = guideDetailsWhereWeAddOpinion.getReviews(); // lista opinii dla danego guide'a
+        List<Review> reviews = guideDetailsWhereWeAddOpinion.getReviews();
 
-        if (reviews.isEmpty()) {
-            guideDetailsWhereWeAddOpinion.setAvgRating(0.0);
-        } else {
             double avg = reviews.stream()
                     .mapToDouble(Review::getNumberOfStars)
                     .average()
                     .orElse(0.0);
             guideDetailsWhereWeAddOpinion.setAvgRating(avg);
-        }
 
         guideDetailsRepository.save(guideDetailsWhereWeAddOpinion);
 
@@ -186,15 +182,11 @@ public class ReviewService {
                 .filter(Review::getIsActive)
                 .toList();
 
-        if (activeReviews.isEmpty()) {
-            guide.setAvgRating(0.0);
-        } else {
             double avg = activeReviews.stream()
                     .mapToDouble(Review::getNumberOfStars)
                     .average()
                     .orElse(0.0);
             guide.setAvgRating(avg);
-        }
 
         guideDetailsRepository.save(guide);
 

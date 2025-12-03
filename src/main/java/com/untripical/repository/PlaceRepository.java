@@ -14,4 +14,5 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     Place findByName(String name);
     List<Place> findAllByRegionType(RegionType type);
     List<Place> findAllByRegionClosestBigCity(String closestBigCity);
+
 }
