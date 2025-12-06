@@ -52,4 +52,10 @@ public class GuideDetails {
     @ManyToOne
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
+
+    @PrePersist
+    protected void onCreate() {
+        this.setAvgRating(0.0);
+        this.setNumberOfAnnouncements(0);
+    }
 }
