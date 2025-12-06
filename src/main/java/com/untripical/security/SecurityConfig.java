@@ -43,7 +43,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {git
         return new BCryptPasswordEncoder(12);
     }
 

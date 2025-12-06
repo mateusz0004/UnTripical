@@ -41,6 +41,11 @@ public class PlaceController {
         return ResponseEntity.ok(placeService.getAllByClosestBigCity(closestBigCity));
     }
 
+    @GetMapping("/popular")
+    public ResponseEntity<List<PlaceResponseDTO>> getTheMostPopularPlaces(){
+        return ResponseEntity.ok(placeService.getTheMostPopularPlaces());
+    }
+
     @PutMapping("/{placeId}")
     public ResponseEntity<PlaceResponseDTO> updatePlace(@RequestBody PlaceUpdateDTO dto, @PathVariable Long placeId){
         return ResponseEntity.ok(placeService.updatePlace(dto, placeId));
