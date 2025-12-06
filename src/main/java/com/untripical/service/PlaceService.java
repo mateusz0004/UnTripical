@@ -15,16 +15,15 @@ import com.untripical.exception.region.RegionDoesNotExist;
 import com.untripical.exception.review.ReviewDoesNotExist;
 import com.untripical.exception.user.IncorrectRoleTypeException;
 import com.untripical.mapper.place.PlaceMapper;
-import com.untripical.model.GuideDetails;
-import com.untripical.model.Place;
-import com.untripical.model.Region;
-import com.untripical.model.User;
+import com.untripical.model.*;
 import com.untripical.repository.GuideDetailsRepository;
 import com.untripical.repository.PlaceRepository;
 import com.untripical.repository.RegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -234,6 +233,21 @@ public class PlaceService {
         return placeRepository.findAllByAvgRatingGreaterThanAndCity(avgRating, nameOfCity)
                 .stream()
                 .filter(Place::getIsActive)
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+    public List<PlaceResponseDTO> getTheMostPopularPlaces(){
+
+        List<Place> places = placeRepository.findAll();
+
+        places.sort(Comparator.comparingInt((Place p) -> p.getAnnouncements()
+                .stream()
+                .filter(Announcement::getIsActive)
+                .toList()
+                .size()
+        ).reversed());
+
+        return places.stream()
                 .map(placeMapper::toResponse)
                 .collect(Collectors.toList());
     }
