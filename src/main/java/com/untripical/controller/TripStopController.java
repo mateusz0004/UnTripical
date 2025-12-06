@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/tripStop")
+@RequestMapping("/tripStop")
 @RestController
 public class TripStopController {
 

@@ -3,6 +3,7 @@ package com.untripical.controller;
 import com.untripical.dto.place.PlaceRequestDTO;
 import com.untripical.dto.place.PlaceResponseDTO;
 import com.untripical.dto.place.PlaceUpdateDTO;
+import com.untripical.enums.PlaceType;
 import com.untripical.enums.RegionType;
 import com.untripical.enums.VerificationStatus;
 import com.untripical.service.PlaceService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/place")
+@RequestMapping("/place")
 public class PlaceController {
 
     @Autowired
@@ -56,5 +57,50 @@ public class PlaceController {
     public ResponseEntity<PlaceResponseDTO> deletePlaceById(@PathVariable Long placeId){
         placeService.deletePlaceById(placeId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/avg-opinion-higher-than/{avgOpinion}")
+    public List<PlaceResponseDTO> getPlaceWithAvgOpinionHigherThan (@PathVariable Long avgOpinion){
+        return placeService.getPlaceWithAvgOpinionHigherThan(avgOpinion);
+    }
+
+    @GetMapping("/amount-of-opinion-higher-than/{minReviews}")
+    public List<PlaceResponseDTO> getPlaceWithAmountOfOpinionHigherThan (@PathVariable Long minReviews){
+        return placeService.getPlaceWithAmountOfOpinionsHigherThan(minReviews);
+    }
+
+    @GetMapping("/created-by/waiting-for-approval/{createdBy}")
+    List<PlaceResponseDTO> listOfPlaceWithStatusWaitingForApproval (@PathVariable Long createdBy){
+        return placeService.getPlacesAddedByUserAndWaitingForApproval(createdBy);
+    }
+
+    @GetMapping("/waiting-for-approval")
+    List<PlaceResponseDTO> listOfPlaceWithStatusWaitingForApprovalAndCreatedBy (){
+        return placeService.listOfPlaceWithStatusWaitingForApproval();
+    }
+
+    @GetMapping("/similar/{placeId}")
+    List<PlaceResponseDTO> getSimilarPlacesToPlaceWithId (@PathVariable Long placeId){
+        return placeService.getSimilarPlacesToPlaceWithId(placeId);
+    }
+
+    @GetMapping("/average-place-rating/{placeId}")
+    double getAveragePlaceRating(@PathVariable Long placeId){
+        return placeService.getAveragePlaceRating(placeId);
+    }
+
+    @GetMapping("/by-place-type/{placeType}")
+    List<PlaceResponseDTO> getPlacesByPlaceType (@PathVariable PlaceType placeType){
+        return placeService.getPlaceByPlaceType(placeType);
+    }
+
+    @GetMapping("/with-region-and-avgOpinion/{regionId}/{avgOpinion}")
+    List<PlaceResponseDTO> getPlacesByRegionAndAvgOpinionHigherThan (@PathVariable Long regionId, @PathVariable double avgOpinion){
+        return placeService.getPlaceByRegionAndAverageRatingHigherThan(regionId, avgOpinion);
+    }
+
+    @GetMapping("/with-city-and-avgOpinion/{city}/{avgOpinion}")
+    List<PlaceResponseDTO> getPlacesByCityAndAvgOpinionHigherThan (@PathVariable String city, @PathVariable double avgOpinion){
+        return placeService.getPlaceByCityAndAverageRatingHigherThan(city, avgOpinion);
     }
 }

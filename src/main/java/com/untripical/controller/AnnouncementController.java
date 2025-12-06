@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-@RequestMapping("/api/announcement")
+@RequestMapping("/announcement")
 @RestController
 public class AnnouncementController {
 

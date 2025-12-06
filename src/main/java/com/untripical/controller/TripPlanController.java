@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
-@RequestMapping("/api/plan")
+@RequestMapping("/plan")
 @RestController
 public class TripPlanController {
 

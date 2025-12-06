@@ -3,6 +3,7 @@ package com.untripical.service;
 import com.untripical.dto.place.PlaceRequestDTO;
 import com.untripical.dto.place.PlaceResponseDTO;
 import com.untripical.dto.place.PlaceUpdateDTO;
+import com.untripical.dto.review.place.ReviewResponsePlaceDTO;
 import com.untripical.enums.PlaceType;
 import com.untripical.enums.RegionType;
 import com.untripical.enums.VerificationStatus;
@@ -11,6 +12,7 @@ import com.untripical.exception.place.PlaceDoesNotExist;
 import com.untripical.exception.place.PlaceWithNameIsExisting;
 import com.untripical.exception.region.IncorrectRegionType;
 import com.untripical.exception.region.RegionDoesNotExist;
+import com.untripical.exception.review.ReviewDoesNotExist;
 import com.untripical.exception.user.IncorrectRoleTypeException;
 import com.untripical.mapper.place.PlaceMapper;
 import com.untripical.model.GuideDetails;
@@ -43,6 +45,9 @@ public class PlaceService {
 
     @Autowired
     private GuideDetailsRepository guideDetailsRepository;
+
+    @Autowired
+    private ReviewService reviewService;
     
     public PlaceResponseDTO getPlaceById(Long id) {
         Place place = placeRepository.findById(id)
@@ -53,7 +58,7 @@ public class PlaceService {
     }
 
     public List<PlaceResponseDTO> getAllByRegionType(RegionType type){
-        return placeRepository.findAllByRegionType(type)
+        return placeRepository.findAllByRegion_Type(type)
                 .stream()
                 .filter(existingPlace -> existingPlace.getStatus() == VerificationStatus.APPROVED)
                 .filter(Place::getIsActive)
@@ -62,7 +67,7 @@ public class PlaceService {
     }
 
     public List<PlaceResponseDTO> getAllByClosestBigCity(String closestBigCity){
-        return placeRepository.findAllByRegionClosestBigCity(closestBigCity)
+        return placeRepository.findAllByRegion_ClosestBigCity(closestBigCity)
                 .stream()
                 .filter(existingPlace -> existingPlace.getStatus() == VerificationStatus.APPROVED)
                 .filter(Place::getIsActive)
@@ -157,5 +162,79 @@ public class PlaceService {
         place.setStatus(status);
         Place saved = placeRepository.save(place);
         return placeMapper.toResponse(saved);
+    }
+
+    public List<PlaceResponseDTO> listOfPlaceWithStatusWaitingForApproval(){
+        return placeRepository.findAllByStatus(VerificationStatus.WAITING_FOR_APPROVAL)
+                .stream()
+                .filter(Place::getIsActive)
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceResponseDTO> getPlaceWithAvgOpinionHigherThan(Long avgOpinion){
+        return placeRepository.findAllByAvgRatingGreaterThan(avgOpinion)
+                .stream()
+                .filter(Place::getIsActive)
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceResponseDTO> getPlaceWithAmountOfOpinionsHigherThan(Long minReviews){
+        List<Place> places = placeRepository.findPlacesWithMoreThanReviews(minReviews);
+        return places.stream()
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceResponseDTO> getPlacesAddedByUserAndWaitingForApproval(Long userId){
+        return placeRepository.findAllByStatusAndUser_Id(VerificationStatus.WAITING_FOR_APPROVAL, userId)
+                .stream()
+                .filter(Place::getIsActive)
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceResponseDTO> getSimilarPlacesToPlaceWithId(Long placeId){
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(()-> new PlaceDoesNotExist("This place does not exist"));
+        return placeRepository.findAllByPlaceTypeAndRegion_Id(place.getPlaceType(), place.getRegion().getId())
+                .stream()
+                .filter(p->!p.getId().equals(placeId))
+                .filter(Place::getIsActive)
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public Double getAveragePlaceRating (Long placeId){
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(()-> new PlaceDoesNotExist("This place does not exist"));
+        return place.getAvgRating();
+    }
+
+    public List<PlaceResponseDTO> getPlaceByPlaceType(PlaceType placeType){
+        return placeRepository.findAllByPlaceType(placeType)
+                .stream()
+                .filter(Place::getIsActive)
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceResponseDTO> getPlaceByRegionAndAverageRatingHigherThan(Long regionId, double avgRating){
+        Region region = regionRepository.findById(regionId)
+                .orElseThrow(()-> new RegionDoesNotExist("This region does not exist"));
+        return placeRepository.findAllByAvgRatingGreaterThanAndRegion(avgRating, region)
+                .stream()
+                .filter(Place::getIsActive)
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceResponseDTO> getPlaceByCityAndAverageRatingHigherThan(String nameOfCity, double avgRating){
+        return placeRepository.findAllByAvgRatingGreaterThanAndCity(avgRating, nameOfCity)
+                .stream()
+                .filter(Place::getIsActive)
+                .map(placeMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }

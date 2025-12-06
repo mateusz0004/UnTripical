@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/review")
+@RequestMapping("/review")
 @RestController
 public class ReviewController {
     @Autowired
@@ -92,9 +92,14 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getGuideDetailsReviewsContainingKeyword(keyword));
     }
 
-    @GetMapping("/place/containing/{numberOfStars}")
+    @GetMapping("/place/numberOfStars/{numberOfStars}")
     public ResponseEntity<List<ReviewResponsePlaceDTO>> getReviewsForPlaceByNumberOfStars (@PathVariable Double numberOfStars){
         return ResponseEntity.ok(reviewService.getReviewsForPlaceByNumberOfStars(numberOfStars));
+    }
+
+    @GetMapping("/guideDetails/numberOfStars/{numberOfStars}")
+    public ResponseEntity<List<ReviewResponseGuideDetailsDTO>> getReviewsForGuideDetailsByNumberOfStars (@PathVariable Double numberOfStars){
+        return ResponseEntity.ok(reviewService.getReviewsForGuideDetailsByNumberOfStars(numberOfStars));
     }
 
     //@GetMapping("/place/with/number-of-stars/{numberOfStars}")

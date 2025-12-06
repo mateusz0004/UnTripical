@@ -3,6 +3,7 @@ package com.untripical.controller;
 import com.untripical.dto.guideDetails.GuideDetailsResponseDTO;
 import com.untripical.dto.guideDetails.GuideDetailsUpdateResponseWithTokenDTO;
 import com.untripical.dto.guideDetailsOrUser.GuideDetailsOrUserUpdateDTO;
+import com.untripical.dto.place.PlaceResponseDTO;
 import com.untripical.dto.userDto.GuideDetailsOrUserRequest;
 import com.untripical.enums.Specialisation;
 import com.untripical.service.GuideDetailsService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/guide")
+@RequestMapping("/guide")
 @RestController
 public class GuideDetailsController {
     @Autowired
@@ -62,5 +63,10 @@ public class GuideDetailsController {
     public ResponseEntity<GuideDetailsResponseDTO> deleteGuideDetailsWithIdByAdmin(@PathVariable Long id){
         guideDetailsService.deleteGuideDetailsWithIdByAdmin(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/place/waiting-for-approval")
+    List<PlaceResponseDTO> listOfPlaceWithStatusWaitingForApproval (){
+        return guideDetailsService.listOfPlaceWithStatusWaitingForApproval();
     }
 }

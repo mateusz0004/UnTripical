@@ -48,10 +48,13 @@ public class Place {
     @NotNull(message = "isActive must not be null")
     private Boolean isActive;
 
-
     @Column(name = "photo_url")
     @NotBlank(message = "photoUrl must not be blank")
     private String photoUrl;
+
+    @Column(name = "average_rating")
+    @NotNull(message = "averageRating must not be null")
+    private Double avgRating;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

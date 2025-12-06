@@ -3,6 +3,7 @@ package com.untripical.service;
 import com.untripical.dto.guideDetails.GuideDetailsResponseDTO;
 import com.untripical.dto.guideDetails.GuideDetailsUpdateResponseWithTokenDTO;
 import com.untripical.dto.guideDetailsOrUser.GuideDetailsOrUserUpdateDTO;
+import com.untripical.dto.place.PlaceResponseDTO;
 import com.untripical.dto.review.guide.ReviewResponseGuideDetailsDTO;
 import com.untripical.dto.userDto.GuideDetailsOrUserRequest;
 import com.untripical.enums.Specialisation;
@@ -14,7 +15,6 @@ import com.untripical.mapper.guideDetails.GuideDetailsMapper;
 import com.untripical.mapper.user.UserMapper;
 import com.untripical.model.GuideDetails;
 import com.untripical.model.Region;
-import com.untripical.model.Review;
 import com.untripical.model.User;
 import com.untripical.repository.GuideDetailsRepository;
 import com.untripical.repository.UserRepository;
@@ -48,23 +48,33 @@ public class GuideDetailsService {
     @Autowired
     private JWTService jwt;
     @Autowired
+    private PlaceService placeService;
+    @Autowired
     private ReviewService reviewService;
+
 
     public GuideDetailsResponseDTO getGuideDetailsById(Long id){
         GuideDetails guideDetails = guideDetailsRepository.findById(id)
                 .orElseThrow(()-> new GuideDetailsDoesNotExist("This guide does not exist"));
+        if(!guideDetails.getUser().getIsActive()){
+            throw new GuideDetailsDoesNotExist("This guide does not exist");
+        }
         return guideDetailsMapper.toResponse(guideDetails);
     }
     public GuideDetailsResponseDTO getGuideDetailsByGuideName(String guideName){
-        User user = userRepository.findByUsername(guideName)
+        User currentUser = userRepository.findByUsername(guideName)
                 .orElseThrow(()-> new GuideDetailsDoesNotExist("This guide does not exist"));
-        return getGuideDetailsById(user.getId());
+        if(!currentUser.getIsActive()){
+            throw new GuideDetailsDoesNotExist("This guide does not exist");
+        }
+        return getGuideDetailsById(currentUser.getId());
     }
 
     public List<GuideDetailsResponseDTO> getGuideDetailsBySpecialisation(Specialisation specialisation){
         List<GuideDetails> guideDetailsList = guideDetailsRepository.findAllBySpecialisation(specialisation)
                 .orElseThrow(()-> new GuideDetailsDoesNotExist("Guide with this specialisation does not exist"));
         return guideDetailsList.stream()
+                .filter(g-> g.getUser().getIsActive())
                 .map(guideDetailsMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -72,6 +82,7 @@ public class GuideDetailsService {
     public List<GuideDetailsResponseDTO> getAllGuideDetails(){
         return guideDetailsRepository.findAll()
                 .stream()
+                .filter(g-> g.getUser().getIsActive())
                 .map(guideDetailsMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -91,6 +102,9 @@ public class GuideDetailsService {
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        if(!currentUser.getIsActive()){
+            throw new GuideDetailsDoesNotExist("This guide does not exist");
+        }
         Long currentGuideId = currentUser.getId();
         GuideDetails currentGuideDetails = guideDetailsRepository.findById(currentGuideId)
                 .orElseThrow(() -> new GuideDetailsDoesNotExist("This guide does not exist"));
@@ -138,6 +152,9 @@ public class GuideDetailsService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if(!currentUser.getIsActive()){
+            throw new GuideDetailsDoesNotExist("This guide doest not exist");
+        }
         Long currentGuideId = currentUser.getId();
         GuideDetails currentGuideDetails = guideDetailsRepository.findById(currentGuideId)
                 .orElseThrow(()-> new GuideDetailsDoesNotExist("This guide does not exist"));
@@ -148,9 +165,14 @@ public class GuideDetailsService {
     public void deleteGuideDetailsWithIdByAdmin(Long id){
         GuideDetails guideDetails = guideDetailsRepository.findById(id)
                 .orElseThrow(()->new GuideDetailsDoesNotExist("This guide does not exist"));
+        if(!guideDetails.getUser().getIsActive()){
+            throw new GuideDetailsDoesNotExist("This guide does not exist");
+        }
         userService.deleteUserByAdmin(id);
     }
-
+    public List<PlaceResponseDTO> listOfPlaceWithStatusWaitingForApproval (){
+        return placeService.listOfPlaceWithStatusWaitingForApproval();
+    }
     public List<GuideDetailsResponseDTO> getGuideDetailsByClosestBigCity (String closestBigCity){
 
         List<GuideDetails> guideDetailsList =  guideDetailsRepository.findAllByClosestBigCity(closestBigCity)
