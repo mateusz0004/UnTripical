@@ -12,9 +12,11 @@ import com.untripical.exception.guideDetails.GuideDetailsDoesNotExist;
 import com.untripical.exception.guideDetails.ListOfGuideDetailsDoesNotExist;
 import com.untripical.exception.user.UserWithThisUsernameAlreadyExist;
 import com.untripical.mapper.guideDetails.GuideDetailsMapper;
+import com.untripical.mapper.review.ReviewMapper;
 import com.untripical.mapper.user.UserMapper;
 import com.untripical.model.GuideDetails;
 import com.untripical.model.Region;
+import com.untripical.model.Review;
 import com.untripical.model.User;
 import com.untripical.repository.GuideDetailsRepository;
 import com.untripical.repository.UserRepository;
@@ -51,16 +53,22 @@ public class GuideDetailsService {
     private PlaceService placeService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private ReviewMapper reviewMapper;
 
 
     public GuideDetailsResponseDTO getGuideDetailsById(Long id){
         GuideDetails guideDetails = guideDetailsRepository.findById(id)
                 .orElseThrow(()-> new GuideDetailsDoesNotExist("This guide does not exist"));
-        if(!guideDetails.getUser().getIsActive()){
-            throw new GuideDetailsDoesNotExist("This guide does not exist");
-        }
-        return guideDetailsMapper.toResponse(guideDetails);
+        GuideDetailsResponseDTO dto = guideDetailsMapper.toResponse(guideDetails);
+        List<ReviewResponseGuideDetailsDTO> activeReviews = guideDetails.getReviews().stream()
+                .filter(Review::getIsActive)
+                .map(reviewMapper::toGuideDetailsResponse)
+                .collect(Collectors.toList());
+        dto.setReviews(activeReviews);
+        return dto;
     }
+
     public GuideDetailsResponseDTO getGuideDetailsByGuideName(String guideName){
         User currentUser = userRepository.findByUsername(guideName)
                 .orElseThrow(()-> new GuideDetailsDoesNotExist("This guide does not exist"));

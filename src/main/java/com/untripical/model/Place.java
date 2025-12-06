@@ -87,5 +87,6 @@ public class Place {
     @PrePersist
     protected void onCreate() {
         this.isActive = true;
+        this.setAvgRating(0.0);
     }
 }

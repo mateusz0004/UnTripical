@@ -44,10 +44,10 @@ public class TripPlanController {
         return ResponseEntity.noContent().build();
     }
 
-    //@GetMapping("/date")
-    //public ResponseEntity<List<TripPlanResponseDTO>> getTripPlanByDate(@RequestBody TripPlanRequestDTO dto){
-    //    return ResponseEntity.ok(tripPlanService.getTripPlanByDate(dto.getDate()));
-    // }
+    @GetMapping("/date")
+    public ResponseEntity<List<TripPlanResponseDTO>> getTripPlanByDate(@RequestBody TripPlanRequestDTO dto){
+        return ResponseEntity.ok(tripPlanService.getTripPlanByDate(dto.getDayWhenTripPlanIsStarting()));
+     }
 
     @PutMapping("/update/{name}")
     public ResponseEntity<TripPlanResponseDTO> updateTripPlan(@RequestBody TripPlanRequestDTO dto, @PathVariable String name){
