@@ -79,5 +79,4 @@ public class Announcement {
         this.createdAt = new Date();
         this.isActive = true;
     }
-
 }
