@@ -1,0 +1,63 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: untripical
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ${DB_USERNAME:-user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=${DB_USERNAME:-user}
+      - PMA_PASSWORD=${DB_PASSWORD:-password}
+    ports:
+      - "8081:80"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: untripical-backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DB_USERNAME=${DB_USERNAME:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/untripical
+      - GOOGLE_KEY=${GOOGLE_KEY:-your_google_api_key_here}
+      - ADMIN1_USERNAME=${ADMIN1_USERNAME:-admin1}
+      - ADMIN1_PASSWORD=${ADMIN1_PASSWORD:-admin123}
+      - ADMIN1_EMAIL=${ADMIN1_EMAIL:-admin1@example.com}
+      - ADMIN2_USERNAME=${ADMIN2_USERNAME:-admin2}
+      - ADMIN2_PASSWORD=${ADMIN2_PASSWORD:-admin456}
+      - ADMIN2_EMAIL=${ADMIN2_EMAIL:-admin2@example.com}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: untripical-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  mysql_data:

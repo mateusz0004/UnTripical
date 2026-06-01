@@ -52,13 +52,13 @@ public class PlaceController {
     }
 
     @PutMapping("/{verificationStatus}/{placeId}")
-    @PreAuthorize("hasRole('GUIDE')")
+    @PreAuthorize("hasAuthority('ROLE_GUIDE')")
     public ResponseEntity<PlaceResponseDTO> setVerificationStatusOfPlaceByGuide (@PathVariable VerificationStatus verificationStatus, @PathVariable Long placeId){
         return ResponseEntity.ok(placeService.setVerificationStatusOfPlaceByGuide(placeId, verificationStatus));
     }
 
     @DeleteMapping("/{placeId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<PlaceResponseDTO> deletePlaceById(@PathVariable Long placeId){
         placeService.deletePlaceById(placeId);
         return ResponseEntity.noContent().build();
