@@ -7,9 +7,9 @@ services:
       MYSQL_DATABASE: untripical
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: ${DB_USERNAME:-user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password} # Poprawiono spację
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -38,7 +38,7 @@ services:
       - DB_USERNAME=${DB_USERNAME:-user}
       - DB_PASSWORD=${DB_PASSWORD:-password}
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/untripical
-      - GOOGLE_KEY=${GOOGLE_KEY:-your_google_api_key_here}
+      - GOOGLE_KEY=${GOOGLE_KEY}
       - ADMIN1_USERNAME=${ADMIN1_USERNAME:-admin1}
       - ADMIN1_PASSWORD=${ADMIN1_PASSWORD:-admin123}
       - ADMIN1_EMAIL=${ADMIN1_EMAIL:-admin1@example.com}

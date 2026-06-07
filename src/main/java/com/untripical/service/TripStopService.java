@@ -21,7 +21,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 @Transactional
 public class TripStopService {
@@ -42,51 +41,77 @@ public class TripStopService {
     private DistanceService distanceService;
 
     @Autowired
-    UserService userService;
-
-
+    private UserService userService;
 
     public TripStopResponseDTO addTripStop(TripStopRequestDTO dto) {
         Long actualUserId = userService.getCurrentUser().getId();
-
 
         TripPlan tripPlan = tripPlanRepository.findByIdAndUser_Id(dto.getTripPlanId(), actualUserId)
                 .orElseThrow(() -> new TripPlanDoesNotExist("Trip plan with ID " + dto.getTripPlanId() + " does not exist"));
 
         Place place = placeRepository.findById(dto.getPlaceId())
                 .orElseThrow(() -> new PlaceDoesNotExist("Place with ID " + dto.getPlaceId() + " does not exist"));
-        int amountOfTripStopsInTripPlan = tripPlan.getTripStops().size();
+
+        List<TripStop> existingStops = tripStopRepository.findAllByTripPlan_IdAndTripPlan_User_Id(dto.getTripPlanId(), actualUserId)
+                .stream()
+                .sorted(Comparator.comparingInt(TripStop::getOrderIndex))
+                .collect(Collectors.toList());
+
+        int amountOfTripStopsInTripPlan = existingStops.size();
+
+        if (amountOfTripStopsInTripPlan >= 0) {
+            try {
+                Place pOrigin;
+                Place pDest = place;
+
+                if (amountOfTripStopsInTripPlan > 0) {
+                    TripStop previousStop = existingStops.stream()
+                            .filter(ts -> ts.getOrderIndex() == amountOfTripStopsInTripPlan)
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("Could not find previous trip stop"));
+                    pOrigin = previousStop.getPlace();
+                } else {
+                    pOrigin = place;
+                }
+
+                String streetO = pOrigin.getAddressStreet() != null ? pOrigin.getAddressStreet() : "";
+                String cityO = pOrigin.getCity() != null ? pOrigin.getCity() : "";
+                String zipO = pOrigin.getPostalCode() != null ? pOrigin.getPostalCode() : "";
+
+                String streetD = pDest.getAddressStreet() != null ? pDest.getAddressStreet() : "";
+                String cityD = pDest.getCity() != null ? pDest.getCity() : "";
+                String zipD = pDest.getPostalCode() != null ? pDest.getPostalCode() : "";
+
+                String tempOriginAddress = (streetO + " " + zipO + " " + cityO + ", Polska").replaceAll("\\s+", " ").trim();
+                String tempDestinationAddress = (streetD + " " + zipD + " " + cityD + ", Polska").replaceAll("\\s+", " ").trim();
+
+                double distance = distanceService.getDistanceInKm(tempOriginAddress, tempDestinationAddress);
+
+                if (amountOfTripStopsInTripPlan > 0) {
+                    TripStop previousStop = existingStops.get(amountOfTripStopsInTripPlan - 1);
+                    previousStop.setDistanceToNext(distance);
+                    tripStopRepository.save(previousStop);
+                }
+
+            } catch (Exception e) {
+                if (amountOfTripStopsInTripPlan > 0) {
+                    TripStop previousStop = existingStops.get(amountOfTripStopsInTripPlan - 1);
+                    previousStop.setDistanceToNext(0.0);
+                    tripStopRepository.save(previousStop);
+                }
+            }
+        }
 
         TripStop newTripStop = new TripStop();
         newTripStop.setDescription(dto.getDescription());
         newTripStop.setOrderIndex(amountOfTripStopsInTripPlan + 1);
         newTripStop.setPlace(place);
         newTripStop.setTripPlan(tripPlan);
+        newTripStop.setDistanceToNext(0.0);
 
-        tripPlan.addTripStop(newTripStop);
+        TripStop savedNewStop = tripStopRepository.save(newTripStop);
+        tripPlan.getTripStops().add(savedNewStop);
 
-
-        if(amountOfTripStopsInTripPlan>=1){
-            try {
-                TripStop origin = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan-1);
-                TripStop destination = tripPlan.getTripStops().get(amountOfTripStopsInTripPlan);
-                String tempOriginAddress = origin.getPlace().getAddressStreet() + " " + origin.getPlace().getAddressNumber() + ", "
-                        + origin.getPlace().getPostalCode() + " " + origin.getPlace().getCity();
-                String tempDestinationAddress = destination.getPlace().getAddressStreet() + " " + destination.getPlace().getAddressNumber()
-                        + ", " + destination.getPlace().getPostalCode() + " "  + destination.getPlace().getCity();
-                double distance = distanceService.getDistanceInKm(tempOriginAddress, tempDestinationAddress);
-                origin.setDistanceToNext(distance);
-                destination.setDistanceToNext(0.0);
-                tripStopRepository.save(origin);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }else{
-            newTripStop.setDistanceToNext(0.0);
-        }
-
-
-        TripStop saved = tripStopRepository.save(newTripStop);
         double totalDistance = tripPlan.getTripStops()
                 .stream()
                 .mapToDouble(TripStop::getDistanceToNext)
@@ -94,9 +119,9 @@ public class TripStopService {
 
         tripPlan.setTotalDistance(totalDistance);
         tripPlanRepository.save(tripPlan);
-        return tripStopMapper.toResponse(saved);
-    }
 
+        return tripStopMapper.toResponse(savedNewStop);
+    }
 
     public void deleteTripStop(Long orderIndex, Long tripPlanId) throws Exception {
         Long userId = userService.getCurrentUser().getId();
@@ -129,18 +154,26 @@ public class TripStopService {
             TripStop origin = stops.get(deletedIndex - 2);
             TripStop destination = stops.get(deletedIndex - 1);
 
-            String originAddress = origin.getPlace().getAddressStreet() + " " +
-                    origin.getPlace().getAddressNumber() + ", " +
-                    destination.getPlace().getPostalCode() + " " +
-                    origin.getPlace().getCity();
+            Place pOrigin = origin.getPlace();
+            Place pDest = destination.getPlace();
 
-            String destinationAddress = destination.getPlace().getAddressStreet() + " " +
-                    destination.getPlace().getAddressNumber() + ", " +
-                    destination.getPlace().getPostalCode() + " " +
-                    destination.getPlace().getCity();
+            String streetO = pOrigin.getAddressStreet() != null ? pOrigin.getAddressStreet() : "";
+            String cityO = pOrigin.getCity() != null ? pOrigin.getCity() : "";
+            String zipO = pOrigin.getPostalCode() != null ? pOrigin.getPostalCode() : "";
 
-            double distance = distanceService.getDistanceInKm(originAddress, destinationAddress);
-            origin.setDistanceToNext(distance);
+            String streetD = pDest.getAddressStreet() != null ? pDest.getAddressStreet() : "";
+            String cityD = pDest.getCity() != null ? pDest.getCity() : "";
+            String zipD = pDest.getPostalCode() != null ? pDest.getPostalCode() : "";
+
+            String originAddress = (streetO + " " + zipO + " " + cityO + ", Polska").replaceAll("\\s+", " ").trim();
+            String destinationAddress = (streetD + " " + zipD + " " + cityD + ", Polska").replaceAll("\\s+", " ").trim();
+
+            try {
+                double distance = distanceService.getDistanceInKm(originAddress, destinationAddress);
+                origin.setDistanceToNext(distance);
+            } catch (Exception e) {
+                origin.setDistanceToNext(0.0);
+            }
         }
 
         tripStopRepository.saveAll(stops);
@@ -151,9 +184,7 @@ public class TripStopService {
 
         tripPlan.setTotalDistance(totalDistance);
         tripPlanRepository.save(tripPlan);
-        tripPlanRepository.save(tripPlan);
     }
-
 
     public TripStopResponseDTO updateTripStop(TripStopUpdateRequestDTO dto, Long orderIndex, Long tripPlanId){
         Long actualUserId = userService.getCurrentUser().getId();

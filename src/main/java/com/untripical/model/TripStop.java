@@ -1,6 +1,7 @@
 package com.untripical.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
@@ -36,12 +37,12 @@ public class TripStop {
     private Double distanceToNext;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties("tripStops")
     @JoinColumn (name = "trip_plan_id")
     private TripPlan tripPlan;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties("tripStops")
     @JoinColumn (name = "place_id")
     private Place place;
 }

@@ -1,6 +1,7 @@
 package com.untripical.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.untripical.enums.PlaceType;
 import com.untripical.enums.VerificationStatus;
@@ -61,7 +62,7 @@ public class Place {
     @NotNull(message = "status must not be null")
     private VerificationStatus status;
 
-    @JsonManagedReference
+    @JsonIgnoreProperties("place")
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TripStop> tripStops;
 

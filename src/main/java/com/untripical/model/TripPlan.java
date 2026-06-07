@@ -3,6 +3,7 @@ package com.untripical.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -52,9 +53,8 @@ public class TripPlan {
     private Double totalDistance;
 
     @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
-   // @JsonManagedReference
+    @JsonIgnoreProperties("tripPlan")
     private List<TripStop> tripStops;
-
     public void addTripStop(TripStop tripStop){
         this.tripStops.add(tripStop);
         tripStop.setTripPlan(this);
