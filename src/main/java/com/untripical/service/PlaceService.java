@@ -6,6 +6,7 @@ import com.untripical.dto.place.PlaceUpdateDTO;
 import com.untripical.dto.review.place.ReviewResponsePlaceDTO;
 import com.untripical.enums.PlaceType;
 import com.untripical.enums.RegionType;
+import com.untripical.enums.UserRole;
 import com.untripical.enums.VerificationStatus;
 import com.untripical.exception.guideDetails.GuideDetailsDoesNotExist;
 import com.untripical.exception.place.PlaceDoesNotExist;
@@ -164,9 +165,24 @@ public class PlaceService {
     }
 
     public List<PlaceResponseDTO> listOfPlaceWithStatusWaitingForApproval(){
+        User currentUser = null;
+        try {
+            currentUser = userService.getCurrentUser();
+        } catch (Exception ignored) {}
+
+        final RegionType guideRegionType;
+        if (currentUser != null && currentUser.getUserRole() == UserRole.GUIDE) {
+            guideRegionType = guideDetailsRepository.findById(currentUser.getId())
+                    .map(g -> g.getRegion().getType())
+                    .orElse(null);
+        } else {
+            guideRegionType = null;
+        }
+
         return placeRepository.findAllByStatus(VerificationStatus.WAITING_FOR_APPROVAL)
                 .stream()
                 .filter(Place::getIsActive)
+                .filter(p -> guideRegionType == null || p.getRegion().getType() == guideRegionType)
                 .map(placeMapper::toResponse)
                 .collect(Collectors.toList());
     }

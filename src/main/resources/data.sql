@@ -52,8 +52,8 @@ INSERT INTO places (id, name, city, address_street, address_number, place_type, 
 -- ====================================================================
 INSERT INTO reviews (id, order_index, is_active, number_of_stars, description, created_at, place_id, user_id, guide_details_id) VALUES
 (1, 1, 1, 5.0, 'Niezapomniane widoki, schronisko klimatyczne!', NOW(), 1, 3, 2),
-(2, 1, 1, 4.5, 'Zamek robi wrażenie, warto odwiedzić ekspozycję.', NOW(), 2, 3, NULL),
-(3, 1, 1, 4.8, 'Magiczne Bieszczady. Podejście ostre, ale warto dla panoramy.', NOW(), 3, 3, NULL);
+(2, 1, 1, 4.5, 'Zamek robi wrażenie, warto odwiedzić ekspozycję.', NOW(), 2, 3, 2),
+(3, 1, 1, 4.8, 'Magiczne Bieszczady. Podejście ostre, ale warto dla panoramy.', NOW(), 3, 3, 2);
 
 -- ====================================================================
 -- KROK 6: ANNOUNCEMENTS

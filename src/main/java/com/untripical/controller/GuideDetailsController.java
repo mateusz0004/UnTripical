@@ -20,6 +20,11 @@ public class GuideDetailsController {
     @Autowired
     private GuideDetailsService guideDetailsService;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<GuideDetailsResponseDTO>> getAllGuideDetails() {
+        return ResponseEntity.ok(guideDetailsService.getAllGuideDetails());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GuideDetailsResponseDTO> getGuideDetailsById(@PathVariable Long id) {
         return ResponseEntity.ok(guideDetailsService.getGuideDetailsById(id));

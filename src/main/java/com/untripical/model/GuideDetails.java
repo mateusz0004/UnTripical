@@ -43,6 +43,7 @@ public class GuideDetails {
     private List<GuideAnnouncementTable> guideAnnouncements;
     @JsonManagedReference
     @OneToMany(mappedBy = "guideDetails", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("orderIndex ASC")
     private List<Review>reviews;
     @OneToOne
     @JsonBackReference

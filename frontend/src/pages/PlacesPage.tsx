@@ -81,7 +81,7 @@ export function PlacesPage() {
   const placeTypeLabel = (t: PlaceType) => (t === 'TYPICAL' ? 'Typowe' : 'Nietypowe');
 
   const avgOpinion = (p: PlaceResponseDTO): number => {
-    const reviews = p.reviews ?? [];
+    const reviews = (p.reviews ?? []).filter((r) => r !== null && r !== undefined);
     if (!reviews.length) return 0;
     const sum = reviews.reduce((acc, r) => acc + (Number(r.numberOfStars) || 0), 0);
     return sum / reviews.length;

@@ -68,7 +68,7 @@ public class Place {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderColumn(name = "order_index")
+    @OrderBy("orderIndex ASC")
     private List<Review> reviews;
 
     @JsonBackReference

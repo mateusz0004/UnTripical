@@ -636,7 +636,7 @@ export function PlaceDetailsPage() {
           </Typography>
           {item.reviews?.length ? (
             <Stack spacing={1}>
-              {item.reviews.slice(0, 10).map((r) => (
+              {(item.reviews ?? []).filter(r => r !== null && r !== undefined).slice(0, 10).map((r) => (
                 <Card key={r.orderIndex} variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 0.5 }}>
