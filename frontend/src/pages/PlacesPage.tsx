@@ -366,7 +366,7 @@ export function PlacesPage() {
           size="small"
           SelectProps={{ native: true }}
           value={sortMode}
-          onChange={(e) => setSortMode(e.target.value as any)}
+          onChange={(e) => setSortMode(e.target.value as 'DEFAULT' | 'RATING_DESC' | 'RATING_ASC')}
           sx={{ minWidth: 240 }}
         >
           <option value="DEFAULT">Domyślnie</option>

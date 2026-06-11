@@ -177,7 +177,7 @@ export function GuidesPage() {
             labelId="guides-sort-label"
             label="Sortowanie"
             value={sortMode}
-            onChange={(e) => setSortMode(e.target.value as any)}
+            onChange={(e) => setSortMode(e.target.value as SortMode)}
           >
             <MenuItem value="DEFAULT">Domyślne</MenuItem>
             <MenuItem value="RATING_DESC">Ocena: od najwyższej</MenuItem>
