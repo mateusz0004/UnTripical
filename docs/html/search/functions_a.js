@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['numberofreviewscreatedforoneguidedetails_0',['numberOfReviewsCreatedForOneGuideDetails',['../classcom_1_1untripical_1_1controller_1_1_review_controller.html#afd8551be91054b580f5591a802b90d00',1,'com.untripical.controller.ReviewController.numberOfReviewsCreatedForOneGuideDetails()'],['../classcom_1_1untripical_1_1service_1_1_review_service.html#aa580fb88528f94a65554a2d2cde595f8',1,'com.untripical.service.ReviewService.numberOfReviewsCreatedForOneGuideDetails()']]],
+  ['numberofreviewsforoneplace_1',['numberOfReviewsForOnePlace',['../classcom_1_1untripical_1_1controller_1_1_review_controller.html#ad25e808c646e04f706a9eb43846952b5',1,'com.untripical.controller.ReviewController.numberOfReviewsForOnePlace()'],['../classcom_1_1untripical_1_1service_1_1_review_service.html#aa174637d2061faf98295ca3e013820f2',1,'com.untripical.service.ReviewService.numberOfReviewsForOnePlace()']]],
+  ['numbersofreviewscreatedbyuser_2',['numbersOfReviewsCreatedByUser',['../classcom_1_1untripical_1_1controller_1_1_review_controller.html#a86175eb0adae0d619bfa76c41f93099c',1,'com.untripical.controller.ReviewController.numbersOfReviewsCreatedByUser()'],['../classcom_1_1untripical_1_1service_1_1_review_service.html#a147137896562b269db48b21835822d57',1,'com.untripical.service.ReviewService.numbersOfReviewsCreatedByUser()']]]
+];

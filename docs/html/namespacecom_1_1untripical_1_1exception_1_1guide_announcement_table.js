@@ -1,0 +1,5 @@
+var namespacecom_1_1untripical_1_1exception_1_1guide_announcement_table =
+[
+    [ "GuideAnnouncementTableDoesNotExist", "classcom_1_1untripical_1_1exception_1_1guide_announcement_table_1_1_guide_announcement_table_does_not_exist.html", "classcom_1_1untripical_1_1exception_1_1guide_announcement_table_1_1_guide_announcement_table_does_not_exist" ],
+    [ "ListOfGuideAnnouncementTableDoesNotExist", "classcom_1_1untripical_1_1exception_1_1guide_announcement_table_1_1_list_of_guide_announcement_table_does_not_exist.html", "classcom_1_1untripical_1_1exception_1_1guide_announcement_table_1_1_list_of_guide_announcement_table_does_not_exist" ]
+];

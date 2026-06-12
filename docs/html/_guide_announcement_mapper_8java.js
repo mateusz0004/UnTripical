@@ -1,0 +1,4 @@
+var _guide_announcement_mapper_8java =
+[
+    [ "com.untripical.mapper.guideAnnouncementTable.GuideAnnouncementMapper", "interfacecom_1_1untripical_1_1mapper_1_1guide_announcement_table_1_1_guide_announcement_mapper.html", "interfacecom_1_1untripical_1_1mapper_1_1guide_announcement_table_1_1_guide_announcement_mapper" ]
+];

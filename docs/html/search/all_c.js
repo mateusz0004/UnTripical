@@ -1,0 +1,8 @@
+var searchData=
+[
+  ['nature_0',['NATURE',['../enumcom_1_1untripical_1_1enums_1_1_specialisation.html#abb2f1fe7cbe09708782a0e015891e406',1,'com::untripical::enums::Specialisation']]],
+  ['night_5ftour_1',['NIGHT_TOUR',['../enumcom_1_1untripical_1_1enums_1_1_specialisation.html#ab85b5bc67ba4df90e89f544daf902151',1,'com::untripical::enums::Specialisation']]],
+  ['numberofreviewscreatedforoneguidedetails_2',['numberOfReviewsCreatedForOneGuideDetails',['../classcom_1_1untripical_1_1controller_1_1_review_controller.html#afd8551be91054b580f5591a802b90d00',1,'com.untripical.controller.ReviewController.numberOfReviewsCreatedForOneGuideDetails()'],['../classcom_1_1untripical_1_1service_1_1_review_service.html#aa580fb88528f94a65554a2d2cde595f8',1,'com.untripical.service.ReviewService.numberOfReviewsCreatedForOneGuideDetails()']]],
+  ['numberofreviewsforoneplace_3',['numberOfReviewsForOnePlace',['../classcom_1_1untripical_1_1controller_1_1_review_controller.html#ad25e808c646e04f706a9eb43846952b5',1,'com.untripical.controller.ReviewController.numberOfReviewsForOnePlace()'],['../classcom_1_1untripical_1_1service_1_1_review_service.html#aa174637d2061faf98295ca3e013820f2',1,'com.untripical.service.ReviewService.numberOfReviewsForOnePlace()']]],
+  ['numbersofreviewscreatedbyuser_4',['numbersOfReviewsCreatedByUser',['../classcom_1_1untripical_1_1controller_1_1_review_controller.html#a86175eb0adae0d619bfa76c41f93099c',1,'com.untripical.controller.ReviewController.numbersOfReviewsCreatedByUser()'],['../classcom_1_1untripical_1_1service_1_1_review_service.html#a147137896562b269db48b21835822d57',1,'com.untripical.service.ReviewService.numbersOfReviewsCreatedByUser()']]]
+];

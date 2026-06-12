@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['region_0',['Region',['../classcom_1_1untripical_1_1model_1_1_region.html',1,'com::untripical::model']]],
+  ['regionalreadyexistsexception_1',['RegionAlreadyExistsException',['../classcom_1_1untripical_1_1exception_1_1region_1_1_region_already_exists_exception.html',1,'com::untripical::exception::region']]],
+  ['regioncontroller_2',['RegionController',['../classcom_1_1untripical_1_1controller_1_1_region_controller.html',1,'com::untripical::controller']]],
+  ['regiondoesnotexist_3',['RegionDoesNotExist',['../classcom_1_1untripical_1_1exception_1_1region_1_1_region_does_not_exist.html',1,'com::untripical::exception::region']]],
+  ['regionmapper_4',['RegionMapper',['../interfacecom_1_1untripical_1_1mapper_1_1region_1_1_region_mapper.html',1,'com::untripical::mapper::region']]],
+  ['regionrepository_5',['RegionRepository',['../interfacecom_1_1untripical_1_1repository_1_1_region_repository.html',1,'com::untripical::repository']]],
+  ['regionrequestdto_6',['RegionRequestDTO',['../classcom_1_1untripical_1_1dto_1_1region_1_1_region_request_d_t_o.html',1,'com::untripical::dto::region']]],
+  ['regionresponsedto_7',['RegionResponseDTO',['../classcom_1_1untripical_1_1dto_1_1region_1_1_region_response_d_t_o.html',1,'com::untripical::dto::region']]],
+  ['regionservice_8',['RegionService',['../classcom_1_1untripical_1_1service_1_1_region_service.html',1,'com::untripical::service']]],
+  ['regiontype_9',['RegionType',['../enumcom_1_1untripical_1_1enums_1_1_region_type.html',1,'com::untripical::enums']]],
+  ['review_10',['Review',['../classcom_1_1untripical_1_1model_1_1_review.html',1,'com::untripical::model']]],
+  ['reviewcontroller_11',['ReviewController',['../classcom_1_1untripical_1_1controller_1_1_review_controller.html',1,'com::untripical::controller']]],
+  ['reviewdoesnotexist_12',['ReviewDoesNotExist',['../classcom_1_1untripical_1_1exception_1_1review_1_1_review_does_not_exist.html',1,'com::untripical::exception::review']]],
+  ['reviewmapper_13',['ReviewMapper',['../interfacecom_1_1untripical_1_1mapper_1_1review_1_1_review_mapper.html',1,'com::untripical::mapper::review']]],
+  ['reviewrepository_14',['ReviewRepository',['../interfacecom_1_1untripical_1_1repository_1_1_review_repository.html',1,'com::untripical::repository']]],
+  ['reviewrequestguidedetailsdto_15',['ReviewRequestGuideDetailsDTO',['../classcom_1_1untripical_1_1dto_1_1review_1_1guide_1_1_review_request_guide_details_d_t_o.html',1,'com::untripical::dto::review::guide']]],
+  ['reviewrequestplacedto_16',['ReviewRequestPlaceDTO',['../classcom_1_1untripical_1_1dto_1_1review_1_1place_1_1_review_request_place_d_t_o.html',1,'com::untripical::dto::review::place']]],
+  ['reviewresponseguidedetailsdto_17',['ReviewResponseGuideDetailsDTO',['../classcom_1_1untripical_1_1dto_1_1review_1_1guide_1_1_review_response_guide_details_d_t_o.html',1,'com::untripical::dto::review::guide']]],
+  ['reviewresponseplacedto_18',['ReviewResponsePlaceDTO',['../classcom_1_1untripical_1_1dto_1_1review_1_1place_1_1_review_response_place_d_t_o.html',1,'com::untripical::dto::review::place']]],
+  ['reviewservice_19',['ReviewService',['../classcom_1_1untripical_1_1service_1_1_review_service.html',1,'com::untripical::service']]]
+];
