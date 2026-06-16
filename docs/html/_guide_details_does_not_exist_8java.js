@@ -1,0 +1,4 @@
+var _guide_details_does_not_exist_8java =
+[
+    [ "com.untripical.exception.guideDetails.GuideDetailsDoesNotExist", "classcom_1_1untripical_1_1exception_1_1guide_details_1_1_guide_details_does_not_exist.html", "classcom_1_1untripical_1_1exception_1_1guide_details_1_1_guide_details_does_not_exist" ]
+];

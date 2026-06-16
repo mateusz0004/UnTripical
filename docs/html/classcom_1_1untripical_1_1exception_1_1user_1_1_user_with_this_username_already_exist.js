@@ -1,0 +1,4 @@
+var classcom_1_1untripical_1_1exception_1_1user_1_1_user_with_this_username_already_exist =
+[
+    [ "UserWithThisUsernameAlreadyExist", "classcom_1_1untripical_1_1exception_1_1user_1_1_user_with_this_username_already_exist.html#a054359713ef802bc19c9e5703b505217", null ]
+];

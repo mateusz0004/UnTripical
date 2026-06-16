@@ -1,0 +1,6 @@
+var namespacecom_1_1untripical_1_1exception_1_1announcement =
+[
+    [ "AnnouncementAlreadyExists", "classcom_1_1untripical_1_1exception_1_1announcement_1_1_announcement_already_exists.html", "classcom_1_1untripical_1_1exception_1_1announcement_1_1_announcement_already_exists" ],
+    [ "AnnouncementDoesNotExist", "classcom_1_1untripical_1_1exception_1_1announcement_1_1_announcement_does_not_exist.html", "classcom_1_1untripical_1_1exception_1_1announcement_1_1_announcement_does_not_exist" ],
+    [ "ListOfAnnouncementDoesNotExist", "classcom_1_1untripical_1_1exception_1_1announcement_1_1_list_of_announcement_does_not_exist.html", "classcom_1_1untripical_1_1exception_1_1announcement_1_1_list_of_announcement_does_not_exist" ]
+];

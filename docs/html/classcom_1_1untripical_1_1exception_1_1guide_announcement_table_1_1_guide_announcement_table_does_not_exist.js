@@ -1,0 +1,4 @@
+var classcom_1_1untripical_1_1exception_1_1guide_announcement_table_1_1_guide_announcement_table_does_not_exist =
+[
+    [ "GuideAnnouncementTableDoesNotExist", "classcom_1_1untripical_1_1exception_1_1guide_announcement_table_1_1_guide_announcement_table_does_not_exist.html#aa072c827335ca72677a21a25f9b32541", null ]
+];

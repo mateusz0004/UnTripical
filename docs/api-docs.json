@@ -1,0 +1,3883 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Untripical API",
+        "description": "API aplication Untripical",
+        "contact": {
+            "name": "Mateusz",
+            "email": "mateusz@untripical.com"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Untripical server"
+        }
+    ],
+    "paths": {
+        "/user/update": {
+            "put": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "updateUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserUpdateDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserUpdateResponseWithTokenDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tripStop/{orderIndex}/{tripPlanId}": {
+            "put": {
+                "tags": [
+                    "trip-stop-controller"
+                ],
+                "operationId": "updateTripStop",
+                "parameters": [
+                    {
+                        "name": "orderIndex",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "tripPlanId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TripStopUpdateRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TripStopResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "trip-stop-controller"
+                ],
+                "operationId": "deleteTripStop",
+                "parameters": [
+                    {
+                        "name": "orderIndex",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "tripPlanId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TripStopResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/place/{placeId}/{orderIndex}": {
+            "put": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "updatePlaceReviewWithOrderIndex",
+                "parameters": [
+                    {
+                        "name": "orderIndex",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateRequestPlaceDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "deletePlaceReviewWithOrderIndex",
+                "parameters": [
+                    {
+                        "name": "orderIndex",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/guideDetails/{guideDetailsId}/{orderIndex}": {
+            "put": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "updateGuideDetailsReviewWithOrderIndex",
+                "parameters": [
+                    {
+                        "name": "orderIndex",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "guideDetailsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateRequestGuideDetailsDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReviewResponseGuideDetailsDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "deleteGuideDetailsReviewWithOrderIndex",
+                "parameters": [
+                    {
+                        "name": "orderIndex",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "guideDetailsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/region/{regionId}": {
+            "get": {
+                "tags": [
+                    "region-controller"
+                ],
+                "operationId": "getRegionById",
+                "parameters": [
+                    {
+                        "name": "regionId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegionResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "region-controller"
+                ],
+                "operationId": "updateRegion",
+                "parameters": [
+                    {
+                        "name": "regionId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegionRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegionResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "region-controller"
+                ],
+                "operationId": "deleteRegion",
+                "parameters": [
+                    {
+                        "name": "regionId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegionResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plan/update/{name}": {
+            "put": {
+                "tags": [
+                    "trip-plan-controller"
+                ],
+                "operationId": "updateTripPlan",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TripPlanRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TripPlanResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/{verificationStatus}/{placeId}": {
+            "put": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "setVerificationStatusOfPlaceByGuide",
+                "parameters": [
+                    {
+                        "name": "verificationStatus",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "WAITING_FOR_APPROVAL",
+                                "APPROVED",
+                                "REJECTED"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlaceResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/{placeId}": {
+            "put": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "updatePlace",
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlaceUpdateDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlaceResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "deletePlaceById",
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlaceResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guide": {
+            "put": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "updateGuideDetails",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GuideDetailsOrUserUpdateDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuideDetailsUpdateResponseWithTokenDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "deleteGuideDetails",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/update/{name}": {
+            "put": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "updateDescription",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnnouncementUpdateDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "register",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRegisterRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tripStop": {
+            "post": {
+                "tags": [
+                    "trip-stop-controller"
+                ],
+                "operationId": "addTripStop",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TripStopRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TripStopResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/place": {
+            "post": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "addPlaceReview",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewRequestPlaceDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReviewResponsePlaceDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/guideDetails": {
+            "post": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "addGuideDetailsReview",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewRequestGuideDetailsDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReviewResponseGuideDetailsDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/region": {
+            "get": {
+                "tags": [
+                    "region-controller"
+                ],
+                "operationId": "getAllRegions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RegionResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "region-controller"
+                ],
+                "operationId": "addRegion",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegionRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegionResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plan": {
+            "post": {
+                "tags": [
+                    "trip-plan-controller"
+                ],
+                "operationId": "addTripPlan",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TripPlanRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TripPlanResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place": {
+            "post": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "addTripPlace",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlaceRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlaceResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guide/register": {
+            "post": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "registerGuideDetails",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GuideDetailsOrUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/add": {
+            "post": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "addAnnouncement",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnnouncementRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "UserResponseDTO",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "delete",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/tripStop/{tripPlanId}": {
+            "get": {
+                "tags": [
+                    "trip-stop-controller"
+                ],
+                "operationId": "getAllTripStopsWithPlanId",
+                "parameters": [
+                    {
+                        "name": "tripPlanId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TripStopResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/user/reviews": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "getAllReviewsCreatedByUser",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReviewResponsePlaceDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/reviews/created-for-place/{placeId}": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "numberOfReviewsForOnePlace",
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "integer",
+                                    "format": "int32"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/reviews/created-for-guide/{guideDetailsId}": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "numberOfReviewsCreatedForOneGuideDetails",
+                "parameters": [
+                    {
+                        "name": "guideDetailsId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "integer",
+                                    "format": "int32"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/reviews/created-by-user": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "numbersOfReviewsCreatedByUser",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "integer",
+                                    "format": "int32"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/place/{placeId}": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "getAllPlaceReviewsWithId",
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReviewResponsePlaceDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/place/numberOfStars/{numberOfStars}": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "getReviewsForPlaceByNumberOfStars",
+                "parameters": [
+                    {
+                        "name": "numberOfStars",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReviewResponsePlaceDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/place/containing/{keyword}": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "getPlaceReviewsContainingKeyword",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReviewResponsePlaceDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/guideDetails/{guideId}": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "getAllGuideDetailsReviews",
+                "parameters": [
+                    {
+                        "name": "guideId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReviewResponseGuideDetailsDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/guideDetails/numberOfStars/{numberOfStars}": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "getReviewsForGuideDetailsByNumberOfStars",
+                "parameters": [
+                    {
+                        "name": "numberOfStars",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReviewResponseGuideDetailsDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/review/guideDetails/containing/{keyword}": {
+            "get": {
+                "tags": [
+                    "review-controller"
+                ],
+                "operationId": "getGuideDetailsReviewsContainingKeyword",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReviewResponseGuideDetailsDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/region/type/{type}": {
+            "get": {
+                "tags": [
+                    "region-controller"
+                ],
+                "operationId": "getRegionByType",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "MOUNTAIN",
+                                "COASTAL",
+                                "VIEW_POINT",
+                                "LAKE",
+                                "FOREST",
+                                "DESERT",
+                                "HISTORICAL",
+                                "CULTURAL",
+                                "ADVENTURE",
+                                "RELIGIOUS",
+                                "ISLAND",
+                                "DISTRICT",
+                                "VOIVODESHIP",
+                                "PARK"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegionResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/region/city/{closestBigCity}": {
+            "get": {
+                "tags": [
+                    "region-controller"
+                ],
+                "operationId": "getRegionByClosestBigCity",
+                "parameters": [
+                    {
+                        "name": "closestBigCity",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegionResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plan/{name}": {
+            "get": {
+                "tags": [
+                    "trip-plan-controller"
+                ],
+                "operationId": "getTripPlanByName",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TripPlanResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "trip-plan-controller"
+                ],
+                "operationId": "deleteTripPlan",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TripPlanResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plan/date": {
+            "get": {
+                "tags": [
+                    "trip-plan-controller"
+                ],
+                "operationId": "getTripPlanByDate",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TripPlanRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TripPlanResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plan/all": {
+            "get": {
+                "tags": [
+                    "trip-plan-controller"
+                ],
+                "operationId": "getAllTripPlans",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TripPlanResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/with-region-and-avgOpinion/{regionId}/{avgOpinion}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getPlacesByRegionAndAvgOpinionHigherThan",
+                "parameters": [
+                    {
+                        "name": "regionId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "avgOpinion",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/with-city-and-avgOpinion/{city}/{avgOpinion}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getPlacesByCityAndAvgOpinionHigherThan",
+                "parameters": [
+                    {
+                        "name": "city",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "avgOpinion",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/waiting-for-approval": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "listOfPlaceWithStatusWaitingForApprovalAndCreatedBy",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/type/{type}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getAllByRegionType",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "MOUNTAIN",
+                                "COASTAL",
+                                "VIEW_POINT",
+                                "LAKE",
+                                "FOREST",
+                                "DESERT",
+                                "HISTORICAL",
+                                "CULTURAL",
+                                "ADVENTURE",
+                                "RELIGIOUS",
+                                "ISLAND",
+                                "DISTRICT",
+                                "VOIVODESHIP",
+                                "PARK"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/similar/{placeId}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getSimilarPlacesToPlaceWithId",
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/popular": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getTheMostPopularPlaces",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/id/{id}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getTripPlace",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlaceResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/created-by/waiting-for-approval/{createdBy}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "listOfPlaceWithStatusWaitingForApproval",
+                "parameters": [
+                    {
+                        "name": "createdBy",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/closestBigCity/{closestBigCity}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getAllByClosestBigCity",
+                "parameters": [
+                    {
+                        "name": "closestBigCity",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/by-place-type/{placeType}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getPlacesByPlaceType",
+                "parameters": [
+                    {
+                        "name": "placeType",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "TYPICAL",
+                                "UNTYPICAL"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/avg-opinion-higher-than/{avgOpinion}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getPlaceWithAvgOpinionHigherThan",
+                "parameters": [
+                    {
+                        "name": "avgOpinion",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/average-place-rating/{placeId}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getAveragePlaceRating",
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/place/amount-of-opinion-higher-than/{minReviews}": {
+            "get": {
+                "tags": [
+                    "place-controller"
+                ],
+                "operationId": "getPlaceWithAmountOfOpinionHigherThan",
+                "parameters": [
+                    {
+                        "name": "minReviews",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guide/{id}": {
+            "get": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "getGuideDetailsById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "deleteGuideDetailsWithIdByAdmin",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guide/specialisation/{specialisation}": {
+            "get": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "getGuideDetailsBySpecialisation",
+                "parameters": [
+                    {
+                        "name": "specialisation",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "HISTORY",
+                                "CULTURE",
+                                "NATURE",
+                                "MOUNTAIN_GUIDE",
+                                "CITY_TOUR",
+                                "FOOD_TOUR",
+                                "ADVENTURE",
+                                "ARCHITECTURE",
+                                "RELIGIOUS",
+                                "NIGHT_TOUR",
+                                "BIKE_TOUR",
+                                "WATER_TOUR",
+                                "LOCAL_LIFE"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guide/place/waiting-for-approval": {
+            "get": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "listOfPlaceWithStatusWaitingForApproval_1",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlaceResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guide/name/{guideName}": {
+            "get": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "getGuideDetailsByGuideName",
+                "parameters": [
+                    {
+                        "name": "guideName",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guide/city/{city}": {
+            "get": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "getGuideDetailsByClosestBigCity",
+                "parameters": [
+                    {
+                        "name": "city",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guide/all": {
+            "get": {
+                "tags": [
+                    "guide-details-controller"
+                ],
+                "operationId": "getAllGuideDetails",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/distance": {
+            "get": {
+                "tags": [
+                    "distance-controller"
+                ],
+                "operationId": "getDistance",
+                "parameters": [
+                    {
+                        "name": "origin",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "destination",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/type/{announcementType}": {
+            "get": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "getAnnouncementsByAnnouncementType",
+                "parameters": [
+                    {
+                        "name": "announcementType",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "GROUP",
+                                "INDIVIDUAL"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/placeId/{placeId}": {
+            "get": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "getAnnouncementsByPlaceId",
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/order_by_dsc": {
+            "get": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "getAnnouncementsOrderByDsc",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/order_by_asc": {
+            "get": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "getAnnouncementsOrderByAsc",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/location/{locationInfo}": {
+            "get": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "getAnnouncementsByLocationInfo",
+                "parameters": [
+                    {
+                        "name": "locationInfo",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/id/{id}": {
+            "get": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "getAnnouncementById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/date": {
+            "get": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "getAnnouncementsByDate",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnnouncementDateRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/announcement/all": {
+            "get": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "getAllAnnouncements",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "delete": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "deleteUserOrGuideByAdmin",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/announcement/delete/{name}": {
+            "delete": {
+                "tags": [
+                    "announcement-controller"
+                ],
+                "operationId": "deleteAnnouncement",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UserUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "userRole": {
+                        "type": "string",
+                        "enum": [
+                            "USER",
+                            "GUIDE",
+                            "ADMIN"
+                        ]
+                    }
+                }
+            },
+            "UserUpdateResponseWithTokenDTO": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "$ref": "#/components/schemas/UserResponseDTO"
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TripStopUpdateRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TripStopResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "orderIndex": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "distanceToNext": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "placeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "UpdateRequestPlaceDTO": {
+                "type": "object",
+                "properties": {
+                    "numberOfStars": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UpdateRequestGuideDetailsDTO": {
+                "type": "object",
+                "properties": {
+                    "numberOfStars": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ReviewResponseGuideDetailsDTO": {
+                "type": "object",
+                "properties": {
+                    "numberOfStars": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "guideId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "usernameWhoWroteReview": {
+                        "type": "string"
+                    },
+                    "orderIndex": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "RegionRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "MOUNTAIN",
+                            "COASTAL",
+                            "VIEW_POINT",
+                            "LAKE",
+                            "FOREST",
+                            "DESERT",
+                            "HISTORICAL",
+                            "CULTURAL",
+                            "ADVENTURE",
+                            "RELIGIOUS",
+                            "ISLAND",
+                            "DISTRICT",
+                            "VOIVODESHIP",
+                            "PARK"
+                        ]
+                    },
+                    "closestBigCity": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "type"
+                ]
+            },
+            "AnnouncementResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "nameOfJourney": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "announcementType": {
+                        "type": "string",
+                        "enum": [
+                            "GROUP",
+                            "INDIVIDUAL"
+                        ]
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "locationInfo": {
+                        "type": "string"
+                    },
+                    "maxParticipants": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "placeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "guideAnnouncementTables": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GuideAnnouncementTableResponseDTO"
+                        }
+                    }
+                }
+            },
+            "GuideAnnouncementTableResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "announcementId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "guideDetailsId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "GuideDetailsResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "phoneNumber": {
+                        "type": "string"
+                    },
+                    "closestBigCity": {
+                        "type": "string"
+                    },
+                    "specialisation": {
+                        "type": "string",
+                        "enum": [
+                            "HISTORY",
+                            "CULTURE",
+                            "NATURE",
+                            "MOUNTAIN_GUIDE",
+                            "CITY_TOUR",
+                            "FOOD_TOUR",
+                            "ADVENTURE",
+                            "ARCHITECTURE",
+                            "RELIGIOUS",
+                            "NIGHT_TOUR",
+                            "BIKE_TOUR",
+                            "WATER_TOUR",
+                            "LOCAL_LIFE"
+                        ]
+                    },
+                    "experienceLevel": {
+                        "type": "string",
+                        "enum": [
+                            "BEGINNER",
+                            "INTERMEDIATE",
+                            "ADVANCED",
+                            "EXPERT"
+                        ]
+                    },
+                    "counterOfDidJourney": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "avgRating": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "numberOfAnnouncements": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "regionId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "guideAnnouncements": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GuideAnnouncementTableResponseDTO"
+                        }
+                    },
+                    "reviews": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReviewResponseGuideDetailsDTO"
+                        }
+                    }
+                }
+            },
+            "PlaceResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "addressStreet": {
+                        "type": "string"
+                    },
+                    "addressNumber": {
+                        "type": "string"
+                    },
+                    "placeType": {
+                        "type": "string"
+                    },
+                    "postalCode": {
+                        "type": "string"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "photoUrl": {
+                        "type": "string"
+                    },
+                    "verificationStatus": {
+                        "type": "string",
+                        "enum": [
+                            "WAITING_FOR_APPROVAL",
+                            "APPROVED",
+                            "REJECTED"
+                        ]
+                    },
+                    "regionId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "announcements": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AnnouncementResponseDTO"
+                        }
+                    },
+                    "reviews": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReviewResponsePlaceDTO"
+                        }
+                    }
+                }
+            },
+            "RegionResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "MOUNTAIN",
+                            "COASTAL",
+                            "VIEW_POINT",
+                            "LAKE",
+                            "FOREST",
+                            "DESERT",
+                            "HISTORICAL",
+                            "CULTURAL",
+                            "ADVENTURE",
+                            "RELIGIOUS",
+                            "ISLAND",
+                            "DISTRICT",
+                            "VOIVODESHIP",
+                            "PARK"
+                        ]
+                    },
+                    "closestBigCity": {
+                        "type": "string"
+                    },
+                    "places": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PlaceResponseDTO"
+                        }
+                    },
+                    "guides": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                        }
+                    }
+                }
+            },
+            "ReviewResponsePlaceDTO": {
+                "type": "object",
+                "properties": {
+                    "numberOfStars": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "placeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "usernameWhoWroteReview": {
+                        "type": "string"
+                    },
+                    "orderIndex": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "TripPlanRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "dayWhenTripPlanIsStarting": {
+                        "type": "string",
+                        "format": "date",
+                        "minLength": 1
+                    }
+                }
+            },
+            "TripPlanResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "assignedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "dayWhenTripPlanIsStarting": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "tripStops": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TripStopResponseDTO"
+                        }
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "tripPlanId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalDistance": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                }
+            },
+            "PlaceUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "addressStreet": {
+                        "type": "string"
+                    },
+                    "addressNumber": {
+                        "type": "string"
+                    },
+                    "postalCode": {
+                        "type": "string"
+                    },
+                    "placeType": {
+                        "type": "string"
+                    },
+                    "photoUrl": {
+                        "type": "string"
+                    },
+                    "regionId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "GuideDetailsOrUserUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "guideDetailsUpdateDTO": {
+                        "$ref": "#/components/schemas/GuideDetailsUpdateDTO"
+                    },
+                    "userUpdateDTO": {
+                        "$ref": "#/components/schemas/UserUpdateDTO"
+                    }
+                }
+            },
+            "GuideDetailsUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "phoneNumber": {
+                        "type": "string"
+                    },
+                    "specialisation": {
+                        "type": "string",
+                        "enum": [
+                            "HISTORY",
+                            "CULTURE",
+                            "NATURE",
+                            "MOUNTAIN_GUIDE",
+                            "CITY_TOUR",
+                            "FOOD_TOUR",
+                            "ADVENTURE",
+                            "ARCHITECTURE",
+                            "RELIGIOUS",
+                            "NIGHT_TOUR",
+                            "BIKE_TOUR",
+                            "WATER_TOUR",
+                            "LOCAL_LIFE"
+                        ]
+                    },
+                    "closestBigCity": {
+                        "type": "string"
+                    },
+                    "experienceLevel": {
+                        "type": "string",
+                        "enum": [
+                            "BEGINNER",
+                            "INTERMEDIATE",
+                            "ADVANCED",
+                            "EXPERT"
+                        ]
+                    },
+                    "counterOfDidJourney": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "regionId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "GuideDetailsUpdateResponseWithTokenDTO": {
+                "type": "object",
+                "properties": {
+                    "guideDetails": {
+                        "$ref": "#/components/schemas/GuideDetailsResponseDTO"
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AnnouncementUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "nameOfJourney": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "announcementType": {
+                        "type": "string",
+                        "enum": [
+                            "GROUP",
+                            "INDIVIDUAL"
+                        ]
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double",
+                        "minimum": 0
+                    },
+                    "locationInfo": {
+                        "type": "string"
+                    },
+                    "maxParticipants": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "placeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "UserRegisterRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "username": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            },
+            "Announcement": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "nameOfJourney": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "announcementType": {
+                        "type": "string",
+                        "enum": [
+                            "GROUP",
+                            "INDIVIDUAL"
+                        ]
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double",
+                        "minimum": 0
+                    },
+                    "locationInfo": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "maxParticipants": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "guideAnnouncementTables": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GuideAnnouncementTable"
+                        }
+                    },
+                    "place": {
+                        "$ref": "#/components/schemas/Place"
+                    }
+                },
+                "required": [
+                    "announcementType",
+                    "createdAt",
+                    "date",
+                    "isActive",
+                    "maxParticipants",
+                    "price"
+                ]
+            },
+            "GuideAnnouncementTable": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "announcement": {
+                        "$ref": "#/components/schemas/Announcement"
+                    },
+                    "guideDetails": {
+                        "$ref": "#/components/schemas/GuideDetails"
+                    }
+                }
+            },
+            "GuideDetails": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "phoneNumber": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "specialisation": {
+                        "type": "string",
+                        "enum": [
+                            "HISTORY",
+                            "CULTURE",
+                            "NATURE",
+                            "MOUNTAIN_GUIDE",
+                            "CITY_TOUR",
+                            "FOOD_TOUR",
+                            "ADVENTURE",
+                            "ARCHITECTURE",
+                            "RELIGIOUS",
+                            "NIGHT_TOUR",
+                            "BIKE_TOUR",
+                            "WATER_TOUR",
+                            "LOCAL_LIFE"
+                        ]
+                    },
+                    "closestBigCity": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "experienceLevel": {
+                        "type": "string",
+                        "enum": [
+                            "BEGINNER",
+                            "INTERMEDIATE",
+                            "ADVANCED",
+                            "EXPERT"
+                        ]
+                    },
+                    "counterOfDidJourney": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "avgRating": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "numberOfAnnouncements": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "guideAnnouncements": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GuideAnnouncementTable"
+                        }
+                    },
+                    "reviews": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Review"
+                        }
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "region": {
+                        "$ref": "#/components/schemas/Region"
+                    }
+                },
+                "required": [
+                    "experienceLevel",
+                    "specialisation"
+                ]
+            },
+            "Place": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "city": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "addressStreet": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "addressNumber": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "placeType": {
+                        "type": "string",
+                        "enum": [
+                            "TYPICAL",
+                            "UNTYPICAL"
+                        ]
+                    },
+                    "postalCode": {
+                        "type": "string"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "photoUrl": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "avgRating": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "WAITING_FOR_APPROVAL",
+                            "APPROVED",
+                            "REJECTED"
+                        ]
+                    },
+                    "tripStops": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TripStop"
+                        }
+                    },
+                    "reviews": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Review"
+                        }
+                    },
+                    "region": {
+                        "$ref": "#/components/schemas/Region"
+                    },
+                    "announcements": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Announcement"
+                        }
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "required": [
+                    "avgRating",
+                    "isActive",
+                    "placeType",
+                    "postalCode",
+                    "status"
+                ]
+            },
+            "Region": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "MOUNTAIN",
+                            "COASTAL",
+                            "VIEW_POINT",
+                            "LAKE",
+                            "FOREST",
+                            "DESERT",
+                            "HISTORICAL",
+                            "CULTURAL",
+                            "ADVENTURE",
+                            "RELIGIOUS",
+                            "ISLAND",
+                            "DISTRICT",
+                            "VOIVODESHIP",
+                            "PARK"
+                        ]
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "closestBigCity": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "places": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Place"
+                        }
+                    },
+                    "guides": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GuideDetails"
+                        }
+                    }
+                },
+                "required": [
+                    "isActive",
+                    "type"
+                ]
+            },
+            "Review": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "orderIndex": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "numberOfStars": {
+                        "type": "number",
+                        "format": "double",
+                        "maximum": 5,
+                        "minimum": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "place": {
+                        "$ref": "#/components/schemas/Place"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "guideDetails": {
+                        "$ref": "#/components/schemas/GuideDetails"
+                    }
+                },
+                "required": [
+                    "createdAt",
+                    "isActive",
+                    "numberOfStars",
+                    "orderIndex"
+                ]
+            },
+            "TripPlan": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "assignedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "dayWhenTripPlanIsStarting": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "totalDistance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "required": [
+                    "assignedAt",
+                    "dayWhenTripPlanIsStarting",
+                    "isActive"
+                ]
+            },
+            "TripStop": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "orderIndex": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 1
+                    },
+                    "distanceToNext": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "tripPlan": {
+                        "$ref": "#/components/schemas/TripPlan"
+                    }
+                },
+                "required": [
+                    "orderIndex"
+                ]
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "username": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "userRole": {
+                        "type": "string",
+                        "enum": [
+                            "USER",
+                            "GUIDE",
+                            "ADMIN"
+                        ]
+                    },
+                    "places": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Place"
+                        }
+                    },
+                    "reviews": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Review"
+                        }
+                    },
+                    "tripPlans": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TripPlan"
+                        }
+                    }
+                },
+                "required": [
+                    "createdAt",
+                    "isActive",
+                    "userRole"
+                ]
+            },
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TripStopRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "tripPlanId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "placeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "placeId",
+                    "tripPlanId"
+                ]
+            },
+            "ReviewRequestPlaceDTO": {
+                "type": "object",
+                "properties": {
+                    "numberOfStars": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "placeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "numberOfStars",
+                    "placeId"
+                ]
+            },
+            "ReviewRequestGuideDetailsDTO": {
+                "type": "object",
+                "properties": {
+                    "numberOfStars": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "guideId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "guideId",
+                    "numberOfStars"
+                ]
+            },
+            "PlaceRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "city": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "addressStreet": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "addressNumber": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "placeType": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "photoUrl": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "regionId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "regionId"
+                ]
+            },
+            "GuideDetailsOrUserRequest": {
+                "type": "object",
+                "properties": {
+                    "registerRequest": {
+                        "$ref": "#/components/schemas/UserRegisterRequestDTO"
+                    },
+                    "guideDetailsRequestDTO": {
+                        "$ref": "#/components/schemas/GuideDetailsRequestDTO"
+                    }
+                }
+            },
+            "GuideDetailsRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "phoneNumber": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "specialisation": {
+                        "type": "string",
+                        "enum": [
+                            "HISTORY",
+                            "CULTURE",
+                            "NATURE",
+                            "MOUNTAIN_GUIDE",
+                            "CITY_TOUR",
+                            "FOOD_TOUR",
+                            "ADVENTURE",
+                            "ARCHITECTURE",
+                            "RELIGIOUS",
+                            "NIGHT_TOUR",
+                            "BIKE_TOUR",
+                            "WATER_TOUR",
+                            "LOCAL_LIFE"
+                        ]
+                    },
+                    "closestBigCity": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "experienceLevel": {
+                        "type": "string",
+                        "enum": [
+                            "BEGINNER",
+                            "INTERMEDIATE",
+                            "ADVANCED",
+                            "EXPERT"
+                        ]
+                    },
+                    "counterOfDidJourney": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "regionId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "experienceLevel",
+                    "regionId",
+                    "specialisation"
+                ]
+            },
+            "AnnouncementRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "nameOfJourney": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "announcementType": {
+                        "type": "string",
+                        "enum": [
+                            "GROUP",
+                            "INDIVIDUAL"
+                        ]
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double",
+                        "minimum": 0
+                    },
+                    "locationInfo": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "maxParticipants": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "placeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "announcementType",
+                    "date",
+                    "maxParticipants",
+                    "placeId",
+                    "price"
+                ]
+            },
+            "AnnouncementDateRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    }
+                },
+                "required": [
+                    "date"
+                ]
+            }
+        }
+    }
+}
